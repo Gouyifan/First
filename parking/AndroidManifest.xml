@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.parking"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_parking_space_management"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.parking.LoginActivity"
+            android:theme="@style/LabelTheme"
+            android:label="录停车"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            <intent-filter>  
+            <action android:name="android.intent.action.MAIN" />  
+            <category android:name="android.intent.category.LAUNCHER" />  
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.parking.MainActivity"
+            android:theme="@style/LabelTheme"
+            android:label="" >
+        </activity>
+        <activity
+            android:name="com.example.parking.InputLicenseActivity"
+            android:theme="@style/LabelTheme"
+            android:label="输入牌照" >
+        </activity>
+        <activity
+            android:name="com.example.parking.ParkingInformationActivity"
+            android:theme="@style/LabelTheme"
+            android:label="车辆入场" >
+        </activity>
+        <activity
+            android:name="com.example.parking.ParkingSpaceActivity"
+            android:theme="@style/LabelTheme"
+            android:label="泊位管理" >
+        </activity>
+        <activity
+            android:name="com.example.parking.TestLeavingActivity"
+            android:label="This is LeavingActivity" >
+        </activity>
+         <activity
+            android:name="com.example.parking.ParkingSpaceDetailActivity"
+            android:theme="@style/LabelTheme"
+            android:label="泊位详情" >
+        </activity>
+        <activity
+            android:name="com.example.parking.TodayRecordActivity"
+            android:theme="@style/LabelTheme"
+            android:label="今日记录" >
+        </activity>
+         <activity
+            android:name="com.example.parking.ParkingHistorySearchActivity"
+            android:theme="@style/LabelTheme"
+            android:label="历史记录" >
+        </activity>
+        <activity
+            android:name="com.example.parking.LeavingActivity"
+            android:theme="@style/LabelTheme"
+            android:label="车辆离场" >
+        </activity>
+        <activity
+            android:name="com.example.parking.PrintPreviewActivity"
+            android:theme="@style/LabelTheme"
+            android:label="打印预览" >
+        </activity>
+        <activity
+            android:name="com.example.parking.MobilePaymentActivity"
+            android:theme="@style/LabelTheme"
+            android:label="移动支付" >
+        </activity>
+        <activity
+            android:name="com.example.parking.MobilePaymentSuccessActivity"
+            android:theme="@style/LabelTheme"
+            android:label="收款成功" >
+        </activity>
+         <activity
+            android:name="com.example.parking.WorkAttendanceActivity"
+            android:theme="@style/LabelTheme"
+            android:label="考勤打卡" >
+        </activity>
+         <activity
+            android:name="com.example.parking.UserCenterActivity"
+            android:theme="@style/LabelTheme"
+            android:label="用户中心" >
+        </activity>
+         <activity
+            android:name="com.example.parking.MessageCenterActivity"
+            android:theme="@style/LabelTheme"
+            android:label="消息中心" >
+        </activity>
+        <activity
+            android:name="com.example.parking.ResetPasswdActivity"
+            android:theme="@style/LabelTheme"
+            android:label="重置密码" >
+        </activity>
+    </application>
+
+</manifest>

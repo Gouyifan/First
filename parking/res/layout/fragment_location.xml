@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textSize="20sp" 
+        android:stretchColumns="*"
+        android:weightSum="6" >
+       <TableRow
+            android:id="@+id/locationTableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+            <Button
+                android:id="@+id/locationButtonTJ"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/Tianjin"/>
+            <Button
+                android:id="@+id/locationButtonBJ"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/Beijing"/>
+             <Button
+                android:id="@+id/locationButtonSH"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/Shanghai"/>
+        </TableRow>
+        <TableRow
+            android:id="@+id/locationTableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+            <Button
+                android:id="@+id/locationButtonHB"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/Hebei"/>
+            <Button
+                android:id="@+id/locationButtonSD"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/Shandong"/>
+             <Button
+                android:id="@+id/locationButtonSX"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/Shanxi"/>
+        </TableRow>
+                <TableRow
+                android:id="@+id/locationTableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+            <Button
+                android:id="@+id/bt_back_space_location"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="@string/backspace"/>
+        </TableRow>
+    
+
+</TableLayout>
