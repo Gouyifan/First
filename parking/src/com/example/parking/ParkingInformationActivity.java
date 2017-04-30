@@ -29,12 +29,12 @@ public class ParkingInformationActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//mDBAdapter = new DBAdapter(this);
+		mDBAdapter = new DBAdapter(this);
 		setContentView(R.layout.activity_parking_information);
 		mCarType = (Spinner) findViewById(R.id.sp_car_type);
 		mParkingType = (Spinner) findViewById(R.id.sp_parking_type);
 		mLocationNumber = (Spinner) findViewById(R.id.sp_parking_location);
-		mLicensePlateNumberTV = (TextView) findViewById(R.id.licensePlateNumberTV);
+		mLicensePlateNumberTV = (TextView) findViewById(R.id.tv_license_plate_number);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		mLicensePlateNumberTV.setText(bundle.getString("licensePlate"));
