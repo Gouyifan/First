@@ -1,18 +1,17 @@
 package com.example.parking;
 
+
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android_serialport_api.SerialPort;
 import printerdemo.PrinterClass;
 
 public class PrintPreviewActivity extends Activity {
@@ -107,8 +106,8 @@ public class PrintPreviewActivity extends Activity {
 				}
 			}
 		});
-    	 mPrinter = new PrinterClass();
-    	 mPrinter.printer_uart_on();
+        mPrinter = new PrinterClass();
+        mPrinter.printer_uart_on();
 	}
 
 	private Handler mHandler = new Handler() {
@@ -134,4 +133,8 @@ public class PrintPreviewActivity extends Activity {
         }
     };
 
+    private int doGetData(){
+        SharedPreferences settings = getSharedPreferences("settings", BIND_AUTO_CREATE);
+        return settings.getInt("data",9600);
+    }
 }
