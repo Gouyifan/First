@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class LetterFragment extends Fragment{
     @Override
@@ -56,7 +57,7 @@ public class LetterFragment extends Fragment{
         Button letterButtonX = (Button) getActivity().findViewById(R.id.letterButtonX);
         Button letterButtonY = (Button) getActivity().findViewById(R.id.letterButtonY);
         Button letterButtonZ = (Button) getActivity().findViewById(R.id.letterButtonZ);
-        Button backspaceButton = (Button) getActivity().findViewById(R.id.bt_back_space_letter);
+        ImageButton backspaceButton = (ImageButton) getActivity().findViewById(R.id.bt_back_space_letter);
         letterButtonA.setOnClickListener(mOnClickListener);  
         letterButtonB.setOnClickListener(mOnClickListener); 
         letterButtonC.setOnClickListener(mOnClickListener); 

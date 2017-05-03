@@ -10,6 +10,7 @@ import com.example.parking.R.drawable;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ public class MessageCenterActivity extends Activity {
             	//TODO
             }
         });
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 
     public List<Map<String, Object>> getData(){  
@@ -60,4 +62,15 @@ public class MessageCenterActivity extends Activity {
         return list;  
       }
 
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
+	
 }

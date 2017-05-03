@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -30,6 +31,7 @@ public class TodayRecordActivity extends Activity {
         mDBAdapter = new DBAdapter(this);
         List<Map<String, Object>> list=getData();  
         mListView.setAdapter(new TodayRecordListAdapter(this, list)); 
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 	
 	public List<Map<String, Object>> getData(){  
@@ -80,4 +82,15 @@ public class TodayRecordActivity extends Activity {
                 }
         }
     }
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

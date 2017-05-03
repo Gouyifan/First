@@ -81,10 +81,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:text="@string/zero"/>
-             <Button
+             <ImageButton
                 android:id="@+id/bt_back_space_number"
+                android:src="@drawable/ic_keyboard_backspace_black_24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="@string/backspace"/>
+                android:scaleType="center"/>
         </TableRow>
 </TableLayout>

@@ -11,7 +11,9 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.text.format.DateFormat;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -100,11 +102,13 @@ public class InputLicenseActivity extends FragmentActivity {
 				mHandler.sendMessage(msg);
 			}
 		});
+    	mLicensePlateET.setInputType(InputType.TYPE_NULL);  
     	mNextBT.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
 				new SQLThread().start();
 			}
 		});
+    	getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 
 	private void changeFragment(int resId) {  
@@ -206,7 +210,6 @@ public class InputLicenseActivity extends FragmentActivity {
     					bundle.putString("licensePlate",mLicensePlateET.getText().toString() );
     					intent.putExtras(bundle);
     					startActivity(intent);
-    					finish();	
                 	}else if(cursor.getString(cursor.getColumnIndex("paymentpattern")).equals("现金支付") ||
                 			cursor.getString(cursor.getColumnIndex("paymentpattern")).equals("移动支付") ||
                 			cursor.getString(cursor.getColumnIndex("paymentpattern")).equals("逃费")) {
@@ -255,4 +258,15 @@ public class InputLicenseActivity extends FragmentActivity {
             }
         }
     };
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

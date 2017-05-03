@@ -16,15 +16,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="15sp"
-            android:text="@string/parknumber"/>
+            android:textSize="15sp"/>
         <TextView
             android:id="@+id/tv_attendance_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="15sp"
-            android:text="@string/date"/>
+            android:textSize="15sp"/>
     </LinearLayout>
      <TextView
          android:id="@+id/tv_attendance_user_number"
@@ -34,8 +32,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:textSize="15sp"
-        android:text="@string/usernumber"/>
+        android:textSize="15sp"/>
          <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,8 +80,7 @@
           android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_gravity="center"
-           android:textSize="12sp"
-           android:text="@string/locationstate"/>
+           android:textSize="12sp"/>
        </LinearLayout>
        <LinearLayout 
         android:layout_width="match_parent"

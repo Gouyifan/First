@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,9 +23,9 @@ public class PrintPreviewActivity extends Activity {
 	private static final int EVENT_PRINT_SUCCESS= 301;
 	private Button mConfirmPrintBT;;
 	private Button mCancelPrintBT;
+	private TextView mParkNameTV;
+	private TextView mParkNumberTV;
 	private TextView mUserNumberTV;
-	private TextView mParkingNameTV;;
-	private TextView mParkingNumberTV;
 	private TextView mLocationNumberTV;
 	private TextView mLicenseNumberTV;
 	private TextView mCarTypeTV;
@@ -45,6 +46,9 @@ public class PrintPreviewActivity extends Activity {
 	private String mLicensePlateNumber;
 	private DBAdapter mDBAdapter;
 	private PrinterClass mPrinter;
+    private boolean mPaperTemState = true;
+    private int mRecindex = 0;
+    private String mRecviceMessage = "";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +57,12 @@ public class PrintPreviewActivity extends Activity {
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		mPayType=bundle.getInt("paytype");
+		mParkNameTV = (TextView) findViewById(R.id.tv_parking_name_print);
+		mParkNameTV.setText(R.string.park_name_fixed);
+		mParkNumberTV = (TextView) findViewById(R.id.tv_parking_number_print);
+		mParkNumberTV.setText(R.string.park_number_fixed);
+		mUserNumberTV = (TextView) findViewById(R.id.tv_user_number_print);
+		mUserNumberTV.setText(R.string.user_number_fixed);
 		mLicensePlateNumber=bundle.getString("licenseplate");
 		mLocationNumber = bundle.getInt("locationnumber");
 		mCarType=bundle.getString("cartype");
@@ -60,8 +70,6 @@ public class PrintPreviewActivity extends Activity {
 		mStartTime=bundle.getString("starttime");
 		mLeaveTime=bundle.getString("leavetime");
 		mUserNumberTV=(TextView)findViewById(R.id.tv_user_number_print);
-		mParkingNameTV=(TextView)findViewById(R.id.tv_parking_name_print);
-		mParkingNumberTV=(TextView)findViewById(R.id.tv_parking_number_print);
 		mLocationNumberTV=(TextView)findViewById(R.id.tv_location_number_print);
 		mLicenseNumberTV=(TextView)findViewById(R.id.tv_license_number_print);
 		mCarTypeTV=(TextView)findViewById(R.id.tv_car_type_print);
@@ -76,9 +84,13 @@ public class PrintPreviewActivity extends Activity {
         mLeaveTimeTV.setText("离场时间: " + mLeaveTime);
 		//mParkTimeTV=(TextView)findViewById(R.id.tv_parking_time_print);
 		mExpenseTotalTV=(TextView)findViewById(R.id.tv_expense_total_print);
+		mExpenseTotalTV.setText(R.string.expense_fixed);
 		mFeeScaleTV=(TextView)findViewById(R.id.tv_fee_scale_print);
+		mFeeScaleTV.setText(R.string.fee_scale_fixed);
 		mChargeStandardTV=(TextView)findViewById(R.id.tv_charge_standard_print);
+		mChargeStandardTV.setText(R.string.charge_standard_fixed);
 		mSuperviseTelephoneTV=(TextView)findViewById(R.id.tv_supervise_telephone_print);
+		mSuperviseTelephoneTV.setText(R.string.supervise_telephone_fixed);
 		mConfirmPrintBT=(Button)findViewById(R.id.bt_confirm_print);
 		mConfirmPrintBT.setOnClickListener(new OnClickListener(){
 			@Override
@@ -106,8 +118,17 @@ public class PrintPreviewActivity extends Activity {
 				}
 			}
 		});
-        mPrinter = new PrinterClass();
-        mPrinter.printer_uart_on();
+		mPrinter = new PrinterClass();
+		mPrinter.setPrinterResponseMessageListener(new PrinterClass.PrinterResponseMessageListener() {
+            public void response(byte[] RecMessage) {
+                if(mRecindex ==1){
+                	mRecviceMessage =mPrinter.bytesToHex(RecMessage,0,RecMessage.length);
+                }else if(mRecindex ==2){
+                	//TODO
+                }
+            }
+        });
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	private Handler mHandler = new Handler() {
@@ -117,24 +138,38 @@ public class PrintPreviewActivity extends Activity {
             switch (msg.what) {
                 case EVENT_PRINT_SUCCESS:
                 	StringBuffer sb = new StringBuffer();
-                	sb.append(mUserNumberTV.getText()).append("\n").append(mParkingNameTV.getText())
-                	.append("\n").append(mParkingNumberTV.getText()).append("  ").append(mLocationNumberTV.getText())
+                	sb.append(mUserNumberTV.getText()).append("\n").append(mParkNameTV.getText())
+                	.append("\n").append(mParkNumberTV.getText()).append("  ").append(mLocationNumberTV.getText())
                 	.append("\n").append(mLicenseNumberTV.getText())
                 	.append("\n").append(mCarTypeTV.getText()).append("  ").append(mParkTypeTV.getText())
                 	.append("\n").append(mStartTimeTV.getText()).append("\n").append(mLeaveTimeTV.getText())
                 	.append("\n").append(mExpenseTotalTV.getText()).append("  ")
                 	.append(mFeeScaleTV.getText()).append("\n").append(mChargeStandardTV.getText())
                 	.append("\n").append(mSuperviseTelephoneTV.getText());
-                	mPrinter.send(sb.toString());
+                	mPrinter.printer_uart_on();
+                    mPrinter.send(sb.toString());
                 	Toast.makeText(getApplicationContext(), "打印成功", Toast.LENGTH_SHORT).show();
+                	break;
                 default:
                     break;
             }
         }
     };
 
+
     private int doGetData(){
         SharedPreferences settings = getSharedPreferences("settings", BIND_AUTO_CREATE);
         return settings.getInt("data",9600);
     }
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	        	 finish();
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

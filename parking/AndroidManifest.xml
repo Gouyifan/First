@@ -4,9 +4,9 @@
     android:sharedUserId="android.uid.system"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    <uses-permission android:name="android.permission.SERIAL_PORT"/>
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
@@ -18,7 +18,7 @@
             android:name="com.example.parking.LoginActivity"
             android:theme="@style/LabelTheme"
             android:label="录停车"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateHidden" >
             <intent-filter>  
             <action android:name="android.intent.action.MAIN" />  
             <category android:name="android.intent.category.LAUNCHER" />  
@@ -27,22 +27,34 @@
         <activity
             android:name="com.example.parking.MainActivity"
             android:theme="@style/LabelTheme"
-            android:label="" >
+            android:label="">
         </activity>
         <activity
             android:name="com.example.parking.InputLicenseActivity"
             android:theme="@style/LabelTheme"
             android:label="输入牌照" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.MainActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name="com.example.parking.ParkingInformationActivity"
             android:theme="@style/LabelTheme"
             android:label="车辆入场" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.InputLicenseActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name="com.example.parking.ParkingSpaceActivity"
             android:theme="@style/LabelTheme"
             android:label="泊位管理" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.MainActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name="com.example.parking.TestLeavingActivity"
@@ -52,16 +64,28 @@
             android:name="com.example.parking.ParkingSpaceDetailActivity"
             android:theme="@style/LabelTheme"
             android:label="泊位详情" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.ParkingSpaceActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name="com.example.parking.TodayRecordActivity"
             android:theme="@style/LabelTheme"
-            android:label="今日记录" >
+            android:label="今日记录">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.ParkingSpaceActivity" >
+            </meta-data>
         </activity>
          <activity
             android:name="com.example.parking.ParkingHistorySearchActivity"
             android:theme="@style/LabelTheme"
             android:label="历史记录" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.MainActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name="com.example.parking.LeavingActivity"
@@ -77,11 +101,19 @@
             android:name="com.example.parking.MobilePaymentActivity"
             android:theme="@style/LabelTheme"
             android:label="移动支付" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.LeavingActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name="com.example.parking.MobilePaymentSuccessActivity"
             android:theme="@style/LabelTheme"
             android:label="收款成功" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.MobilePaymentActivity" >
+            </meta-data>
         </activity>
          <activity
             android:name="com.example.parking.WorkAttendanceActivity"
@@ -92,16 +124,28 @@
             android:name="com.example.parking.UserCenterActivity"
             android:theme="@style/LabelTheme"
             android:label="用户中心" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.MainActivity" >
+            </meta-data>
         </activity>
          <activity
             android:name="com.example.parking.MessageCenterActivity"
             android:theme="@style/LabelTheme"
             android:label="消息中心" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.UserCenterActivity" >
+            </meta-data>
         </activity>
         <activity
             android:name="com.example.parking.ResetPasswdActivity"
             android:theme="@style/LabelTheme"
-            android:label="重置密码" >
+             android:label="重置密码" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parking.UserCenterActivity" >
+            </meta-data>
         </activity>
     </application>
 

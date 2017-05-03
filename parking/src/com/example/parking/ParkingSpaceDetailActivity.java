@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -37,6 +38,7 @@ public class ParkingSpaceDetailActivity extends FragmentActivity {
         mRecordOfTodayTV.setOnClickListener(mTabClickListener);
         changeSelect(R.id.parkingInformation);
         changeFragment(R.id.parkingInformation);
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 
 	private void changeFragment(int resId) {  
@@ -88,4 +90,15 @@ public class ParkingSpaceDetailActivity extends FragmentActivity {
             break;
         }  
     }
+	
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -41,6 +42,7 @@ public class MobilePaymentActivity extends FragmentActivity {
         mScanTitleTV.setOnClickListener(mTabClickListener); 
         changeSelect(R.id.tv_mobile_payment_two_dimensions_code);
         changeFragment(R.id.tv_mobile_payment_two_dimensions_code);
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 
 	private void changeSelect(int resId) {  
@@ -78,4 +80,15 @@ public class MobilePaymentActivity extends FragmentActivity {
         	transaction.hide(mPaymentFragment);
         }
     }
+	
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

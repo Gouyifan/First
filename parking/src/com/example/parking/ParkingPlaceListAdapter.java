@@ -64,10 +64,8 @@ public class ParkingPlaceListAdapter extends BaseAdapter {
         }  
         //绑定数据  
         zujian.parkingNumberTV.setText((String)data.get(position).get("parkingNumber"));  
-        zujian.parkingNumberTV.setTextColor(context.getResources().getColor(R.color.gray));  
+        zujian.parkingNumberTV.setBackgroundColor(context.getResources().getColor(R.color.white));
         zujian.licensePlateNumberTV.setText((String)data.get(position).get("licensePlateNumber"));
-        zujian.licensePlateNumberTV.setBackgroundColor((Integer)data.get(position).get("backgroundColor"));
-        zujian.licensePlateNumberTV.setTextColor((Integer)data.get(position).get("textColor"));
         return convertView;  
     }  
   

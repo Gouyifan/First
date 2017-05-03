@@ -30,7 +30,6 @@
             android:paddingTop="5dp"
             android:paddingBottom="3dp"
             android:gravity="left"
-            android:text="@string/userNumberLeaving"
             android:textSize="15sp"/>
             <TextView 
             android:id="@+id/tv_license_number_leaving"
@@ -41,7 +40,6 @@
             android:paddingTop="5dp"
             android:paddingBottom="3dp"
             android:gravity="left"
-            android:text="@string/licenseNumberLeaving"
             android:textSize="15sp"/>
         </LinearLayout>
          <LinearLayout 
@@ -94,7 +92,6 @@
                      android:paddingTop="3dp"
                      android:paddingBottom="3dp"
                      android:gravity="left"
-                     android:text="@string/feeScaleLeaving"
                      android:textSize="15sp"/>
                      <TextView 
                      android:id="@+id/tv_expense_leaving"
@@ -105,7 +102,6 @@
                      android:paddingTop="3dp"
                      android:paddingBottom="3dp"
                      android:gravity="left"
-                     android:text="@string/expenseLeaving"
                      android:textSize="15sp"/>
              </LinearLayout>
         </LinearLayout>

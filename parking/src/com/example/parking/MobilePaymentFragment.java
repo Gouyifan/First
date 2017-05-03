@@ -131,7 +131,6 @@ public class MobilePaymentFragment extends Fragment {
 	            		bundle.putString("leavetime", mLeaveTime);
 	            		intent.putExtras(bundle);
 		        		startActivity(intent);
-		        		getActivity().finish();
 	       	          }
 	            	}
 	            }

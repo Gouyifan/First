@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -70,6 +71,7 @@ public class ParkingSpaceActivity extends Activity {
                 }
             }
         });
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
     public List<Map<String, Object>> getData(){  
         List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();  
@@ -80,11 +82,6 @@ public class ParkingSpaceActivity extends Activity {
             map.put("licensePlateNumber", licenseNumber);
             if(licenseNumber!=null){
             	mIdleLocationNumber--;
-                map.put("backgroundColor", R.color.orange);
-                map.put("textColor", R.color.white);
-            }else{
-                map.put("backgroundColor", R.color.white);
-                map.put("textColor", R.color.orange);
             }
             list.add(map);  
         }
@@ -112,6 +109,21 @@ public class ParkingSpaceActivity extends Activity {
         }
     	return mLicenseNumber;
     }
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
+    
+    
+    
+    
 /*	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

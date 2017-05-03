@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -66,6 +67,7 @@ public class ResetPasswdActivity extends Activity {
 				finish();
 		    }
 		});
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 	
 	private Handler mHandler = new Handler() {
@@ -91,4 +93,14 @@ public class ResetPasswdActivity extends Activity {
         }
     };
 
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

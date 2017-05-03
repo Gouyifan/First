@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -61,6 +62,7 @@ public class ParkingHistorySearchActivity extends FragmentActivity {
 		});
         changeSelect(R.id.tv_payment_state_unfinished_history);
         changeFragment(R.id.tv_payment_state_unfinished_history,mHistoryDateSP.getSelectedItem().toString());
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 
 	private void changeFragment(int resId,String date) {  
@@ -122,4 +124,15 @@ public class ParkingHistorySearchActivity extends FragmentActivity {
             break;
         }  
     }
+	
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

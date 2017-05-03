@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MobilePaymentSuccessActivity extends Activity {
@@ -16,6 +18,7 @@ public class MobilePaymentSuccessActivity extends Activity {
 	private static final int PAYMENT_TYPE_ALIPAY=202;
 	private static final int PAYMENT_TYPE_WECHATPAY=203;
 	private static final int PAYMENT_TYPE_MOBILE=204;
+	private TextView mPaymentSuccessNotifyTV;
 	private Button mPrintPreviewBT;
 	private Button mPaymentSuccessBT;
     private String mLicensePlateNumber;
@@ -35,6 +38,8 @@ public class MobilePaymentSuccessActivity extends Activity {
  		mParkType = intent.getExtras().getString("parktype");
  		mStartTime = intent.getExtras().getString("starttime");
  		mLeaveTime = intent.getExtras().getString("leavetime");
+ 		mPaymentSuccessNotifyTV=(TextView)findViewById(R.id.tv_payment_success_notify);
+ 		mPaymentSuccessNotifyTV.setText(R.string.payment_success_notify_fixed);
         mPrintPreviewBT=(Button)findViewById(R.id.bt_print_preview_mobile_payment_success);
         mPaymentSuccessBT=(Button)findViewById(R.id.bt_finish_payment_success);
         mPrintPreviewBT.setOnClickListener(new OnClickListener(){
@@ -51,7 +56,6 @@ public class MobilePaymentSuccessActivity extends Activity {
         		bundle.putString("leavetime", mLeaveTime);
         		intent.putExtras(bundle);
         		startActivity(intent);
-        		finish();
         	}
         });
         mPaymentSuccessBT.setOnClickListener(new OnClickListener(){
@@ -65,6 +69,7 @@ public class MobilePaymentSuccessActivity extends Activity {
         		finish();
         	}
         });
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	private Handler mHandler = new Handler() {
@@ -79,4 +84,15 @@ public class MobilePaymentSuccessActivity extends Activity {
             }
         }
     };
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

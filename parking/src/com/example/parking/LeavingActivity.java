@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateFormat;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,9 +31,12 @@ public class LeavingActivity extends Activity {
 	private static final int PAYMENT_TYPE_MOBILE=204;
 	private static final int EVENT_PAYMENT_FINISHED=205;
 	//private Button mPrintBT;
+	private TextView mUserNumberTV;;
 	private TextView mLicensePlateNumberTV;
 	private TextView mStartTimeTV;
 	private TextView mLeaveTimeTV;
+	private TextView mFeeScaleTV;
+	private TextView mExpenseTV;
 	private long mCurrentRowID;
 	private String mLicensePlateNumber;
 	private Button mConfirmPaymentBT;
@@ -53,6 +57,8 @@ public class LeavingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_leaving);
 		mDBAdapter = new DBAdapter(this);
+		mUserNumberTV=(TextView)findViewById(R.id.tv_user_number_leaving);
+		mUserNumberTV.setText(R.string.user_number_fixed);
 		mLicensePlateNumberTV=(TextView)findViewById(R.id.tv_license_number_leaving);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
@@ -60,6 +66,10 @@ public class LeavingActivity extends Activity {
 		mLicensePlateNumberTV.setText(mLicensePlateNumber);
 		mStartTimeTV=(TextView)findViewById(R.id.tv_start_time_leaving);
 		mLeaveTimeTV=(TextView)findViewById(R.id.tv_leave_time_leaving);
+		mFeeScaleTV=(TextView)findViewById(R.id.tv_fee_Scale_leaving);
+		mFeeScaleTV.setText(R.string.fee_scale_fixed);
+		mExpenseTV=(TextView)findViewById(R.id.tv_expense_leaving);
+		mExpenseTV.setText(R.string.expense_fixed);
 		mPaymentTypeRG=(RadioGroup)findViewById(R.id.rg_payment_type_leaving);
 		mCashPaymentTypeRB=(RadioButton)findViewById(R.id.rb_cash_payment_leaving);
 		mAlipayPaymentTypeRB=(RadioButton)findViewById(R.id.rb_alipay_payment_leaving);
@@ -133,6 +143,7 @@ public class LeavingActivity extends Activity {
 				showEscapeDialog();
 			}
 		});
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 		new SQLThread().start();
 	}
 
@@ -166,18 +177,24 @@ public class LeavingActivity extends Activity {
         	Cursor cursor = mDBAdapter.getParkingByLicensePlate(mLicensePlateNumber);
             try {
             	cursor.moveToFirst();
-            	if(cursor.getString(cursor.getColumnIndex("paymentpattern")).equals("未付")){
+            	//if(cursor.getString(cursor.getColumnIndex("paymentpattern")).equals("未付")){
        	             mCurrentRowID = cursor.getLong(cursor.getColumnIndex("_id"));
       		         String startTime=cursor.getString(cursor.getColumnIndex("starttime"));
       		         mStartTimeTV.setText("入场：" + startTime);
-      		         CharSequence sysTimeStr = DateFormat.format("yyyy-MM-dd HH:mm:ss", System.currentTimeMillis());
-      		         mLeaveTimeTV.setText("离场：" + sysTimeStr);
+      		         if(cursor.getString(cursor.getColumnIndex("leavetime"))!=null){
+          		         String leaveTime=cursor.getString(cursor.getColumnIndex("leavetime"));
+          		       mLeaveTimeTV.setText("离场：" + leaveTime);
+          		       mLeaveTime = mLeaveTimeTV.getText().toString();
+      		         }else{
+          		         CharSequence sysTimeStr = DateFormat.format("yyyy-MM-dd HH:mm:ss", System.currentTimeMillis());
+          		         mLeaveTimeTV.setText("离场：" + sysTimeStr);
+          		         mLeaveTime = sysTimeStr.toString();
+      		         }
       		          mLocationNumber =  cursor.getInt(cursor.getColumnIndex("locationnumber"));
       		          mCarType = cursor.getString(cursor.getColumnIndex("cartype"));
       		          mParkType = cursor.getString(cursor.getColumnIndex("parkingtype"));
       		          mStartTime = cursor.getString(cursor.getColumnIndex("starttime"));
-      		          mLeaveTime = sysTimeStr.toString();
-            	}
+            	//}
             }
             catch (Exception e) {
                     e.printStackTrace();
@@ -279,4 +296,15 @@ public class LeavingActivity extends Activity {
         }
         return paymentState;
     }
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	        	 finish();
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

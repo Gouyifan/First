@@ -13,7 +13,6 @@
         android:paddingTop="30dp"
         android:paddingBottom="3dp"
         android:gravity="left"
-        android:text="@string/parkingNameLeaving"
         android:textSize="15sp"/>
         <TextView 
         android:id="@+id/tv_parking_number_parking_detail"
@@ -25,7 +24,6 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         android:gravity="left"
-        android:text="@string/parkingNumberLeaving"
         android:textSize="15sp"/>
         <TextView 
         android:id="@+id/tv_license_plate_number_parking_detail"
@@ -49,7 +47,6 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         android:gravity="left"
-        android:text="@string/carTypeLeaving"
         android:textSize="15sp"/>
        <TextView 
         android:id="@+id/tv_parking_type_parking_detail"
@@ -61,7 +58,6 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         android:gravity="left"
-        android:text="@string/parkingTypeLeaving"
         android:textSize="15sp"/>
        <TextView 
         android:id="@+id/tv_location_number_parking_detail"
@@ -73,7 +69,6 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         android:gravity="left"
-        android:text="@string/locationNumberLeaving"
         android:textSize="15sp"/>
        <TextView 
         android:id="@+id/tv_start_time_parking_detail"

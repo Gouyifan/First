@@ -87,15 +87,18 @@ public class MessageCenterListAdapter extends BaseAdapter {
 		if (clickPosition == position) {
 		    if (zujian.enterMessageDetail.isSelected()) {
 		    	    zujian.enterMessageDetail.setSelected(false);
+		    	    zujian.enterMessageDetail.setImageResource(R.drawable.ic_chevron_right_black_24dp);
                     zujian.messageCenterHideDetail.setVisibility(View.GONE);
                     clickPosition=-1;
 		    }else{       
 		    	    zujian.enterMessageDetail.setSelected(true);
+		    	    zujian.enterMessageDetail.setImageResource(R.drawable.ic_expand_more_black_24dp);
                     zujian.messageCenterHideDetail.setVisibility(View.VISIBLE);
               }
         } else {
         	zujian.messageCenterHideDetail.setVisibility(View.GONE);
         	zujian.enterMessageDetail.setSelected(false);
+    	    zujian.enterMessageDetail.setImageResource(R.drawable.ic_chevron_right_black_24dp);
         }
 		zujian.enterMessageDetail.setOnClickListener(new OnClickListener(){
 		    @Override

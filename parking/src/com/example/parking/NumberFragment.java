@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class NumberFragment extends Fragment{
     @Override
@@ -39,7 +40,7 @@ public class NumberFragment extends Fragment{
         Button numberButton8 = (Button) getActivity().findViewById(R.id.numberButton8);
         Button numberButton9 = (Button) getActivity().findViewById(R.id.numberButton9);
         Button numberButton0 = (Button) getActivity().findViewById(R.id.numberButton0);
-        Button backspaceButton = (Button) getActivity().findViewById(R.id.bt_back_space_number);
+        ImageButton backspaceButton = (ImageButton) getActivity().findViewById(R.id.bt_back_space_number);
         numberButton1.setOnClickListener(mOnClickListener);  
         numberButton2.setOnClickListener(mOnClickListener); 
         numberButton3.setOnClickListener(mOnClickListener); 

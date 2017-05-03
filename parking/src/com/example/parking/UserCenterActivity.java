@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -44,6 +45,7 @@ public class UserCenterActivity extends Activity {
                 }
             }
         });
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 
     public List<Map<String, Object>> getData(){  
@@ -89,4 +91,15 @@ public class UserCenterActivity extends Activity {
         });
         exitDialog.show();
     }
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }

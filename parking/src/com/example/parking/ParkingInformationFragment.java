@@ -19,6 +19,8 @@ import android.widget.TextView;
 public class ParkingInformationFragment extends Fragment {
 	private final int EVENT_DISPLAY_TIME = 101;
 	private View mView;
+	private TextView mParkNameTV;
+	private TextView mParkNumberTV;
 	private TextView mLocationNumberTV;
 	private TextView mLicenseNumberTV;
 	private TextView mCarTypeTV;
@@ -55,6 +57,10 @@ public class ParkingInformationFragment extends Fragment {
 	        super.onActivityCreated(savedInstanceState);
 	        mLicensePlateNumber = getActivity().getIntent().getStringExtra("licensePlateNumber");
 	        mDBAdapter = new DBAdapter(getActivity());
+			mParkNameTV = (TextView)mView.findViewById(R.id.tv_parking_name_parking_detail);
+			mParkNameTV.setText(R.string.park_name_fixed);
+			mParkNumberTV = (TextView) mView.findViewById(R.id.tv_parking_number_parking_detail);
+			mParkNumberTV.setText(R.string.park_number_fixed);
 	        mLocationNumberTV=(TextView)mView.findViewById(R.id.tv_location_number_parking_detail);
 			mLicenseNumberTV=(TextView)mView.findViewById(R.id.tv_license_plate_number_parking_detail);
 			mCarTypeTV=(TextView)mView.findViewById(R.id.tv_car_type_parking_detail);

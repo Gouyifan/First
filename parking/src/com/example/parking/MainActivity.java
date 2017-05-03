@@ -1,9 +1,11 @@
 package com.example.parking;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -32,11 +34,11 @@ public class MainActivity extends Activity {
 		mUserTV = (TextView)findViewById(R.id.textView1);
 		mUserTV.setText("工号： "+bundle.getString("user") );*/
 		mParkNumberTV = (TextView)findViewById(R.id.tv_park_number);
-		mParkNumberTV.setText("停车场: P1234" );
+		mParkNumberTV.setText(R.string.park_number_fixed );
 		mUserNumberTV = (TextView)findViewById(R.id.tv_user_number);
-		mUserNumberTV.setText("工号: 101884" );
+		mUserNumberTV.setText(R.string.user_number_fixed);
 		mUserTimeTV = (TextView)findViewById(R.id.tv_user_time);
-		mUserTimeTV.setText("时间:9:00-17:30" );
+		mUserTimeTV.setText(R.string.work_time_fixed );
 		mArrivingButton = (Button) findViewById(R.id.bt_arriving);
 		mArrivingButton.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
@@ -89,5 +91,5 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
-
+	 
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateFormat;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -17,6 +18,8 @@ public class ParkingInformationActivity extends Activity {
 	private final static int EVENT_DISPLAY_TIME = 101;
 	private final static int EVENT_INSERT_SUCCESS = 102;
 	private final static int EVENT_DUPLICATED_LOCATION_NUMBER = 103;
+	private TextView mParkNameTV;
+	private TextView mParkNumberTV;
 	private Spinner mCarType;
 	private Spinner mParkingType;
 	private Spinner mLocationNumber;
@@ -31,6 +34,10 @@ public class ParkingInformationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		mDBAdapter = new DBAdapter(this);
 		setContentView(R.layout.activity_parking_information);
+		mParkNameTV = (TextView) findViewById(R.id.tv_parking_name);
+		mParkNameTV.setText(R.string.park_name_fixed);
+		mParkNumberTV = (TextView) findViewById(R.id.tv_parking_number);
+		mParkNumberTV.setText(R.string.park_number_fixed);
 		mCarType = (Spinner) findViewById(R.id.sp_car_type);
 		mParkingType = (Spinner) findViewById(R.id.sp_parking_type);
 		mLocationNumber = (Spinner) findViewById(R.id.sp_parking_location);
@@ -53,6 +60,7 @@ public class ParkingInformationActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 	}
 
 	private class InsertOnclickListener implements Button.OnClickListener{
@@ -86,6 +94,8 @@ public class ParkingInformationActivity extends Activity {
                     msg.what = EVENT_DUPLICATED_LOCATION_NUMBER;
                     mHandler.sendMessage(msg);
                     mPermissionState=false;
+             	}else{
+             		mPermissionState=true;
              	}
              }
              catch (Exception e) {
@@ -148,4 +158,15 @@ public class ParkingInformationActivity extends Activity {
             }
         }
     };
+    
+	public boolean onOptionsItemSelected(MenuItem item) {  
+	    switch (item.getItemId()) {  
+	         case android.R.id.home:  
+	             finish();  
+	             break;    
+	        default:  
+	             break;  
+	    }  
+	    return super.onOptionsItemSelected(item);  
+	  }  
 }
