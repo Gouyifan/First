@@ -28,6 +28,7 @@ public class MobilePaymentFragment extends Fragment {
  		private String mParkType;
  		private String mStartTime;
  		private String mLeaveTime;
+ 		private String mExpense;
  	    public MobilePaymentFragment(int type){
  	    	mType = type;
 	    }
@@ -52,6 +53,7 @@ public class MobilePaymentFragment extends Fragment {
 	 		mParkType = intent.getExtras().getString("parktype");
 	 		mStartTime = intent.getExtras().getString("starttime");
 	 		mLeaveTime = intent.getExtras().getString("leavetime");
+			mExpense=intent.getExtras().getString("expense");
 	    	mDBAdapter = new DBAdapter(getActivity());
 	    	mFragmentView = (View)mView.findViewById(R.id.fm_mobile_payment);
 	    	mPaymentIV=(ImageView)mView.findViewById(R.id.iv_two_dimensions_code);
@@ -120,7 +122,7 @@ public class MobilePaymentFragment extends Fragment {
 	            	cursor.moveToFirst();
 	            	if(cursor.getString(cursor.getColumnIndex("paymentpattern")).equals("未付")){
 	       	             mCurrentRowID = cursor.getLong(cursor.getColumnIndex("_id"));
-	       	          if(mDBAdapter.updateParking(mCurrentRowID, mLeaveTime, "5元", "移动支付")){
+	       	          if(mDBAdapter.updateParking(mCurrentRowID, mLeaveTime, mExpense, "移动支付")){
 	  	        		Intent intent = new Intent(getActivity(),MobilePaymentSuccessActivity.class);
 	  	        		Bundle bundle = new Bundle();
 	            		bundle.putString("licenseplate", mLicensePlateNumber);
@@ -129,6 +131,7 @@ public class MobilePaymentFragment extends Fragment {
 	            		bundle.putString("parktype", mParkType);
 	            		bundle.putString("starttime", mStartTime);
 	            		bundle.putString("leavetime", mLeaveTime);
+	            		bundle.putString("expense", mExpense);
 	            		intent.putExtras(bundle);
 		        		startActivity(intent);
 	       	          }

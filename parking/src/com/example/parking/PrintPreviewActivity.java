@@ -43,6 +43,7 @@ public class PrintPreviewActivity extends Activity {
 	private String mParkType;
 	private String mStartTime;
 	private String mLeaveTime;
+	private String mExpense;
 	private String mLicensePlateNumber;
 	private DBAdapter mDBAdapter;
 	private PrinterClass mPrinter;
@@ -60,15 +61,16 @@ public class PrintPreviewActivity extends Activity {
 		mParkNameTV = (TextView) findViewById(R.id.tv_parking_name_print);
 		mParkNameTV.setText(R.string.park_name_fixed);
 		mParkNumberTV = (TextView) findViewById(R.id.tv_parking_number_print);
-		mParkNumberTV.setText(R.string.park_number_fixed);
+		mParkNumberTV.setText("车场编号:" + this.getString(R.string.park_number_fixed));
 		mUserNumberTV = (TextView) findViewById(R.id.tv_user_number_print);
-		mUserNumberTV.setText(R.string.user_number_fixed);
+		mUserNumberTV.setText("工号:" + this.getString(R.string.user_number_fixed));
 		mLicensePlateNumber=bundle.getString("licenseplate");
 		mLocationNumber = bundle.getInt("locationnumber");
 		mCarType=bundle.getString("cartype");
 		mParkType=bundle.getString("parktype");
 		mStartTime=bundle.getString("starttime");
 		mLeaveTime=bundle.getString("leavetime");
+		mExpense=bundle.getString("expense");
 		mUserNumberTV=(TextView)findViewById(R.id.tv_user_number_print);
 		mLocationNumberTV=(TextView)findViewById(R.id.tv_location_number_print);
 		mLicenseNumberTV=(TextView)findViewById(R.id.tv_license_number_print);
@@ -76,17 +78,17 @@ public class PrintPreviewActivity extends Activity {
 		mParkTypeTV=(TextView)findViewById(R.id.tv_parking_type_print);
 		mStartTimeTV=(TextView)findViewById(R.id.tv_start_time_print);
 		mLeaveTimeTV=(TextView)findViewById(R.id.tv_leave_time_print);
-		mLicenseNumberTV.setText("车牌号: " + mLicensePlateNumber);
-		mLocationNumberTV.setText("泊位号: " + mLocationNumber);
-    	mCarTypeTV.setText("停车类型: " + mCarType);
-        mParkTypeTV.setText("泊车类型: " + mParkType);
-        mStartTimeTV.setText("入场时间: " + mStartTime);
-        mLeaveTimeTV.setText("离场时间: " + mLeaveTime);
-		//mParkTimeTV=(TextView)findViewById(R.id.tv_parking_time_print);
 		mExpenseTotalTV=(TextView)findViewById(R.id.tv_expense_total_print);
-		mExpenseTotalTV.setText(R.string.expense_fixed);
 		mFeeScaleTV=(TextView)findViewById(R.id.tv_fee_scale_print);
-		mFeeScaleTV.setText(R.string.fee_scale_fixed);
+		mLicenseNumberTV.setText("车牌号:" + mLicensePlateNumber);
+		mLocationNumberTV.setText("泊位号:" + mLocationNumber);
+    	mCarTypeTV.setText("车辆类型:" + mCarType);
+        mParkTypeTV.setText("泊车类型:" + mParkType);
+        mStartTimeTV.setText("入场时间:" + mStartTime);
+        mLeaveTimeTV.setText("离场时间:" + mLeaveTime);
+		//mParkTimeTV=(TextView)findViewById(R.id.tv_parking_time_print);
+		mExpenseTotalTV.setText("费用总计:" + mExpense);
+		mFeeScaleTV.setText("收费标准:" + this.getString(R.string.fee_scale_fixed));
 		mChargeStandardTV=(TextView)findViewById(R.id.tv_charge_standard_print);
 		mChargeStandardTV.setText(R.string.charge_standard_fixed);
 		mSuperviseTelephoneTV=(TextView)findViewById(R.id.tv_supervise_telephone_print);
@@ -139,9 +141,9 @@ public class PrintPreviewActivity extends Activity {
                 case EVENT_PRINT_SUCCESS:
                 	StringBuffer sb = new StringBuffer();
                 	sb.append(mUserNumberTV.getText()).append("\n").append(mParkNameTV.getText())
-                	.append("\n").append(mParkNumberTV.getText()).append("  ").append(mLocationNumberTV.getText())
+                	.append("\n").append(mParkNumberTV.getText()).append(" ").append(mLocationNumberTV.getText())
                 	.append("\n").append(mLicenseNumberTV.getText())
-                	.append("\n").append(mCarTypeTV.getText()).append("  ").append(mParkTypeTV.getText())
+                	.append("\n").append(mCarTypeTV.getText()).append(" ").append(mParkTypeTV.getText())
                 	.append("\n").append(mStartTimeTV.getText()).append("\n").append(mLeaveTimeTV.getText())
                 	.append("\n").append(mExpenseTotalTV.getText()).append("  ")
                 	.append(mFeeScaleTV.getText()).append("\n").append(mChargeStandardTV.getText())
@@ -155,7 +157,6 @@ public class PrintPreviewActivity extends Activity {
             }
         }
     };
-
 
     private int doGetData(){
         SharedPreferences settings = getSharedPreferences("settings", BIND_AUTO_CREATE);

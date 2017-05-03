@@ -27,6 +27,7 @@ public class MobilePaymentSuccessActivity extends Activity {
 	private String mParkType;
 	private String mStartTime;
 	private String mLeaveTime;
+	private String mExpense;
 	@Override  
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);  
@@ -38,8 +39,9 @@ public class MobilePaymentSuccessActivity extends Activity {
  		mParkType = intent.getExtras().getString("parktype");
  		mStartTime = intent.getExtras().getString("starttime");
  		mLeaveTime = intent.getExtras().getString("leavetime");
+		mExpense=intent.getExtras().getString("expense");
  		mPaymentSuccessNotifyTV=(TextView)findViewById(R.id.tv_payment_success_notify);
- 		mPaymentSuccessNotifyTV.setText(R.string.payment_success_notify_fixed);
+ 		mPaymentSuccessNotifyTV.setText(this.getString(R.string.payment_success_notify_fixed) + mExpense);
         mPrintPreviewBT=(Button)findViewById(R.id.bt_print_preview_mobile_payment_success);
         mPaymentSuccessBT=(Button)findViewById(R.id.bt_finish_payment_success);
         mPrintPreviewBT.setOnClickListener(new OnClickListener(){
@@ -54,6 +56,7 @@ public class MobilePaymentSuccessActivity extends Activity {
         		bundle.putString("parktype", mParkType);
         		bundle.putString("starttime", mStartTime);
         		bundle.putString("leavetime", mLeaveTime);
+        		bundle.putString("expense", mExpense);
         		intent.putExtras(bundle);
         		startActivity(intent);
         	}

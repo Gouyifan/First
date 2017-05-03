@@ -16,7 +16,7 @@
              android:paddingRight="5dp"
              android:text="@string/dateTitle">
          </TextView>
-          <Spinner 
+<!--           <Spinner 
             android:id="@+id/sp_history_Date_history"
             android:background="#EBEBEB"
             android:layout_width="0dp"
@@ -28,7 +28,14 @@
             android:layout_marginBottom="5dp"
             android:gravity="center_vertical"
             android:textSize="15sp"
-            android:entries="@array/historyDateArray"/>
+            android:entries="@array/historyDateArray"/> -->
+          <TextView
+              android:id="@+id/tv_display_date"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="2"
+              android:clickable="true"
+              android:text="123456"/>
           <Button
              android:id="@+id/bt_search_history"
              android:layout_width="0dp"

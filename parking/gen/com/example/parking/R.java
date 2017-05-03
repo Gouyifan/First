@@ -223,7 +223,6 @@ public final class R {
         public static final int rg_payment_type_leaving=0x7f0a001b;
         public static final int sign_in_button=0x7f0a0035;
         public static final int sp_car_type=0x7f0a0054;
-        public static final int sp_history_Date_history=0x7f0a0047;
         public static final int sp_parking_location=0x7f0a0058;
         public static final int sp_parking_type=0x7f0a0056;
         public static final int startTimeTV=0x7f0a0028;
@@ -242,6 +241,7 @@ public final class R {
         public static final int tv_car_type_title_arriving=0x7f0a0053;
         public static final int tv_charge_standard_print=0x7f0a0073;
         public static final int tv_detail_message_center=0x7f0a00ec;
+        public static final int tv_display_date=0x7f0a0047;
         public static final int tv_expense_leaving=0x7f0a0018;
         public static final int tv_expense_total_print=0x7f0a0071;
         public static final int tv_fee_Scale_leaving=0x7f0a0017;
@@ -426,18 +426,18 @@ public final class R {
         public static final int cancel=0x7f070082;
         public static final int cancelLeaving=0x7f07008c;
         public static final int cancelPrint=0x7f0700a0;
-        public static final int cancelresetpasswd=0x7f0700bc;
+        public static final int cancelresetpasswd=0x7f0700bd;
         public static final int carType=0x7f07007a;
         public static final int carTypeLeaving=0x7f070088;
         public static final int carTypePrint=0x7f070096;
         public static final int carTypeTitleArriving=0x7f070079;
         public static final int cashPayment=0x7f070058;
         public static final int chargeStandardPrint=0x7f07009d;
-        public static final int charge_standard_fixed=0x7f0700ac;
+        public static final int charge_standard_fixed=0x7f0700ad;
         public static final int confirmLeaving=0x7f07008b;
         public static final int confirmPaymentLeaving=0x7f07005c;
         public static final int confirmPrint=0x7f07009f;
-        public static final int confirmresetpasswd=0x7f0700bb;
+        public static final int confirmresetpasswd=0x7f0700bc;
         public static final int date=0x7f07004b;
         public static final int dateTitle=0x7f070071;
         public static final int eight=0x7f07000b;
@@ -448,12 +448,13 @@ public final class R {
         public static final int escapeLeaving=0x7f07005d;
         public static final int expenseLeaving=0x7f070055;
         public static final int expenseTotalPrint=0x7f07009b;
-        public static final int expense_fixed=0x7f0700ab;
+        public static final int expense_fixed=0x7f0700ac;
         public static final int feeScaleLeaving=0x7f070054;
         public static final int feeScalePrint=0x7f07009c;
         public static final int fee_scale_fixed=0x7f0700aa;
         public static final int five=0x7f070008;
         public static final int four=0x7f070007;
+        public static final int free_expense_fixed=0x7f0700ab;
         public static final int idleparkingnumber=0x7f07008e;
         /**  Strings related to leaving 
          */
@@ -474,17 +475,17 @@ public final class R {
         public static final int locationstate=0x7f070050;
         public static final int login_progress_signing_in=0x7f070066;
         public static final int menu_forgot_password=0x7f070065;
-        public static final int messagecenter=0x7f0700af;
-        public static final int mobile_payment_scan=0x7f0700b3;
-        public static final int mobile_payment_two_dimensions_code=0x7f0700b2;
-        public static final int mobile_payment_type_alipay=0x7f0700b0;
-        public static final int mobile_payment_type_wechatpay=0x7f0700b1;
-        public static final int newpasswdtitle=0x7f0700b9;
+        public static final int messagecenter=0x7f0700b0;
+        public static final int mobile_payment_scan=0x7f0700b4;
+        public static final int mobile_payment_two_dimensions_code=0x7f0700b3;
+        public static final int mobile_payment_type_alipay=0x7f0700b1;
+        public static final int mobile_payment_type_wechatpay=0x7f0700b2;
+        public static final int newpasswdtitle=0x7f0700ba;
         public static final int next=0x7f070048;
         public static final int nine=0x7f07000c;
         public static final int number=0x7f070002;
         public static final int ok=0x7f070081;
-        public static final int oldpasswdtitle=0x7f0700b8;
+        public static final int oldpasswdtitle=0x7f0700b9;
         public static final int one=0x7f070004;
         public static final int park_name_fixed=0x7f0700a1;
         public static final int park_number_fixed=0x7f0700a2;
@@ -508,16 +509,16 @@ public final class R {
         public static final int parknumber=0x7f07004a;
         public static final int paymentInformationTitle=0x7f07005e;
         public static final int paymentInformationTitleLeaving=0x7f070057;
-        public static final int paymentSuccess=0x7f0700b6;
-        public static final int paymentSuccessNotify=0x7f0700b4;
+        public static final int paymentSuccess=0x7f0700b7;
+        public static final int paymentSuccessNotify=0x7f0700b5;
         public static final int paymentTypeTitleLeaving=0x7f070056;
         public static final int payment_state_finished_cash=0x7f070075;
         public static final int payment_state_finished_mobile=0x7f070074;
         public static final int payment_state_unfinished=0x7f070073;
         public static final int payment_state_unfinished_leave=0x7f070076;
-        public static final int payment_success_notify_fixed=0x7f0700ae;
+        public static final int payment_success_notify_fixed=0x7f0700af;
         public static final int printLeaving=0x7f07005b;
-        public static final int printPreview=0x7f0700b5;
+        public static final int printPreview=0x7f0700b6;
         /**  Strings related to arriving 
          */
         public static final int printPreviewTitle=0x7f070090;
@@ -526,15 +527,15 @@ public final class R {
         public static final int prompt_email=0x7f070061;
         public static final int prompt_password=0x7f070062;
         public static final int recordOfToday=0x7f070084;
-        public static final int renewpasswdtitle=0x7f0700ba;
-        public static final int resetpasswd=0x7f0700b7;
+        public static final int renewpasswdtitle=0x7f0700bb;
+        public static final int resetpasswd=0x7f0700b8;
         public static final int scan=0x7f070047;
         public static final int search=0x7f070072;
         public static final int seven=0x7f07000a;
         public static final int six=0x7f070009;
         public static final int startTimePrint=0x7f070098;
         public static final int superviseTelephonePrint=0x7f07009e;
-        public static final int supervise_telephone_fixed=0x7f0700ad;
+        public static final int supervise_telephone_fixed=0x7f0700ae;
         public static final int three=0x7f070006;
         public static final int timeLeaving=0x7f070053;
         public static final int totalparkingnumber=0x7f07008d;
@@ -544,7 +545,7 @@ public final class R {
         public static final int userNumberLeaving=0x7f070051;
         public static final int userNumberPrint=0x7f070091;
         public static final int user_number_fixed=0x7f0700a3;
-        public static final int usercenter=0x7f0700bd;
+        public static final int usercenter=0x7f0700be;
         public static final int usernumber=0x7f07004c;
         public static final int wechatpayPayment=0x7f07005a;
         public static final int work_end_location_fixed=0x7f0700a8;

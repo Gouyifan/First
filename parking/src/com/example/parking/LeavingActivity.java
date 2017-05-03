@@ -5,6 +5,7 @@ import com.example.parking.TestLeavingActivity.TimeThread;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -52,24 +53,26 @@ public class LeavingActivity extends Activity {
 	private String mParkType;
 	private String mStartTime;
 	private String mLeaveTime;
+	private String mExpense;
+	private Context mContext;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_leaving);
+		mContext=this;
 		mDBAdapter = new DBAdapter(this);
 		mUserNumberTV=(TextView)findViewById(R.id.tv_user_number_leaving);
-		mUserNumberTV.setText(R.string.user_number_fixed);
+		mUserNumberTV.setText("工号:" + this.getString(R.string.user_number_fixed));
 		mLicensePlateNumberTV=(TextView)findViewById(R.id.tv_license_number_leaving);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		mLicensePlateNumber = bundle.getString("licensePlate");
-		mLicensePlateNumberTV.setText(mLicensePlateNumber);
+		mLicensePlateNumberTV.setText("牌照:" + mLicensePlateNumber);
 		mStartTimeTV=(TextView)findViewById(R.id.tv_start_time_leaving);
 		mLeaveTimeTV=(TextView)findViewById(R.id.tv_leave_time_leaving);
 		mFeeScaleTV=(TextView)findViewById(R.id.tv_fee_Scale_leaving);
-		mFeeScaleTV.setText(R.string.fee_scale_fixed);
+		mFeeScaleTV.setText("收费标准:" + this.getString(R.string.fee_scale_fixed));
 		mExpenseTV=(TextView)findViewById(R.id.tv_expense_leaving);
-		mExpenseTV.setText(R.string.expense_fixed);
 		mPaymentTypeRG=(RadioGroup)findViewById(R.id.rg_payment_type_leaving);
 		mCashPaymentTypeRB=(RadioButton)findViewById(R.id.rb_cash_payment_leaving);
 		mAlipayPaymentTypeRB=(RadioButton)findViewById(R.id.rb_alipay_payment_leaving);
@@ -117,6 +120,7 @@ public class LeavingActivity extends Activity {
             		bundle.putString("parktype", mParkType);
             		bundle.putString("starttime", mStartTime);
             		bundle.putString("leavetime", mLeaveTime);
+            		bundle.putString("expense", mExpense);
             		intent.putExtras(bundle);
 					intent.putExtras(bundle);
 					startActivity(intent);
@@ -130,6 +134,7 @@ public class LeavingActivity extends Activity {
             		bundle.putString("parktype", mParkType);
             		bundle.putString("starttime", mStartTime);
             		bundle.putString("leavetime", mLeaveTime);
+            		bundle.putString("expense", mExpense);
             		intent.putExtras(bundle);
 					intent.putExtras(bundle);
 					startActivity(intent);
@@ -193,6 +198,13 @@ public class LeavingActivity extends Activity {
       		          mLocationNumber =  cursor.getInt(cursor.getColumnIndex("locationnumber"));
       		          mCarType = cursor.getString(cursor.getColumnIndex("cartype"));
       		          mParkType = cursor.getString(cursor.getColumnIndex("parkingtype"));
+      		          if(mParkType.equals("免费停车")){
+      		        	mExpense=mContext.getString(R.string.free_expense_fixed);
+      		    		mExpenseTV.setText("费用总计:" +  mContext.getString(R.string.free_expense_fixed));
+      		          }else if(mParkType.equals("普通停车")){
+        		        mExpense=mContext.getString(R.string.expense_fixed);
+      		        	mExpenseTV.setText("费用总计:" +  mContext.getString(R.string.expense_fixed));
+      		          }
       		          mStartTime = cursor.getString(cursor.getColumnIndex("starttime"));
             	//}
             }
@@ -214,7 +226,7 @@ public class LeavingActivity extends Activity {
         cashPaymentDialog.setPositiveButton("确定",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            	if(mDBAdapter.updateParking(mCurrentRowID, mLeaveTimeTV.getText().toString().replace("离场：",""), "5元", "现金支付")){
+            	if(mDBAdapter.updateParking(mCurrentRowID, mLeaveTimeTV.getText().toString().replace("离场：",""), mExpense, "现金支付")){
     				Message msg = new Message();
                     msg.what = EVENT_CASH_RECORD_SUCCESS;
                     mHandler.sendMessage(msg);
@@ -227,6 +239,7 @@ public class LeavingActivity extends Activity {
             		bundle.putString("parktype", mParkType);
             		bundle.putString("starttime", mStartTime);
             		bundle.putString("leavetime", mLeaveTime);
+            		bundle.putString("expense", mExpense);
             		intent.putExtras(bundle);
     				startActivity(intent);
             	}else{
@@ -253,7 +266,7 @@ public class LeavingActivity extends Activity {
         escapeDialog.setPositiveButton("确定",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            	if(mDBAdapter.updateParking(mCurrentRowID, mLeaveTimeTV.getText().toString().replace("离场：",""), "0元", "逃费")){
+            	if(mDBAdapter.updateParking(mCurrentRowID, mLeaveTimeTV.getText().toString().replace("离场：",""), mContext.getString(R.string.free_expense_fixed), "逃费")){
     				Message msg = new Message();
                     msg.what = EVENT_ESCAPE_RECORD_SUCCESS;
                     mHandler.sendMessage(msg);

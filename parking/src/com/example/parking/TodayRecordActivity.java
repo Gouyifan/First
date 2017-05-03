@@ -11,12 +11,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class TodayRecordActivity extends Activity {
+	public static final int NO_TODAY_PARKING_RECORD =101;
 	private View mView;
 	private ListView mListView;
 	private int mLocationNumber;
@@ -51,11 +55,12 @@ public class TodayRecordActivity extends Activity {
     	titleMap.put("startTime","入场时间");
     	titleMap.put("leaveTime", "离场时间");
     	titleMap.put("paymentState","支付状态");
-    	titleMap.put("expense", "费用");
+    	titleMap.put("expense", "支付金额");
         list.add(titleMap); 
     	Log.e("yifan", "count: " + cursor.getCount());
     	Log.e("yifan", "locationNumber: " + locationNumber);
         try {
+        	int count = 0;
         	while(cursor.moveToNext()){
         	    	  Log.e("yifan", "dblocation: " + cursor.getInt(cursor.getColumnIndex("locationnumber")));
         	    	  if(cursor.getInt(cursor.getColumnIndex("locationnumber"))==locationNumber ){
@@ -71,8 +76,15 @@ public class TodayRecordActivity extends Activity {
         	    		  map.put("paymentState", cursor.getString(cursor.getColumnIndex("paymentpattern")));
         	    		  map.put("expense", cursor.getString(cursor.getColumnIndex("expense")));
       		              list.add(map); 
+      		            count++;
         	    	  }
         	      }
+        	if(count==0){
+        		list.remove(titleMap);
+		        Message msg = new Message();
+		        msg.what=NO_TODAY_PARKING_RECORD;
+		        mHandler.sendMessage(msg);
+        	}
         }
         catch (Exception e) {
                 e.printStackTrace();
@@ -93,4 +105,19 @@ public class TodayRecordActivity extends Activity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+	private Handler mHandler = new Handler() {
+	    @Override
+	    public void handleMessage (Message msg) {
+	        super.handleMessage(msg);
+	        switch (msg.what) {
+	            case NO_TODAY_PARKING_RECORD:
+	            	Toast.makeText(getApplicationContext(), "此泊位今日暂无停车记录", Toast.LENGTH_SHORT).show();
+	                break;
+	            default:
+	                break;
+	        }
+	    }
+	};
 }
+

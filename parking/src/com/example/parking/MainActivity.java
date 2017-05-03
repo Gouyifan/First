@@ -34,11 +34,11 @@ public class MainActivity extends Activity {
 		mUserTV = (TextView)findViewById(R.id.textView1);
 		mUserTV.setText("工号： "+bundle.getString("user") );*/
 		mParkNumberTV = (TextView)findViewById(R.id.tv_park_number);
-		mParkNumberTV.setText(R.string.park_number_fixed );
+		mParkNumberTV.setText("车场编号:" + this.getString(R.string.park_number_fixed));
 		mUserNumberTV = (TextView)findViewById(R.id.tv_user_number);
-		mUserNumberTV.setText(R.string.user_number_fixed);
+		mUserNumberTV.setText("工号:" + this.getString(R.string.user_number_fixed));
 		mUserTimeTV = (TextView)findViewById(R.id.tv_user_time);
-		mUserTimeTV.setText(R.string.work_time_fixed );
+		mUserTimeTV.setText("时间:" + this.getString(R.string.work_time_fixed));
 		mArrivingButton = (Button) findViewById(R.id.bt_arriving);
 		mArrivingButton.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){

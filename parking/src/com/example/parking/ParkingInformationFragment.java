@@ -60,7 +60,7 @@ public class ParkingInformationFragment extends Fragment {
 			mParkNameTV = (TextView)mView.findViewById(R.id.tv_parking_name_parking_detail);
 			mParkNameTV.setText(R.string.park_name_fixed);
 			mParkNumberTV = (TextView) mView.findViewById(R.id.tv_parking_number_parking_detail);
-			mParkNumberTV.setText(R.string.park_number_fixed);
+			mParkNumberTV.setText("车场编号: " + this.getString(R.string.park_number_fixed));
 	        mLocationNumberTV=(TextView)mView.findViewById(R.id.tv_location_number_parking_detail);
 			mLicenseNumberTV=(TextView)mView.findViewById(R.id.tv_license_plate_number_parking_detail);
 			mCarTypeTV=(TextView)mView.findViewById(R.id.tv_car_type_parking_detail);

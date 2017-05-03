@@ -51,9 +51,9 @@ public class WorkAttendanceActivity extends Activity {
 		Bundle bundle = intent.getExtras();
 		mType = bundle.getInt("attendancetype");
 		mParkNumberTV = (TextView)findViewById(R.id.tv_attendance_park_number);
-		mParkNumberTV.setText(R.string.park_number_fixed );
+		mParkNumberTV.setText("车场编号:" + this.getString(R.string.park_number_fixed));
 		mUserNumberTV = (TextView)findViewById(R.id.tv_attendance_user_number);
-		mUserNumberTV.setText(R.string.user_number_fixed );
+		mUserNumberTV.setText("工号:" + this.getString(R.string.user_number_fixed) );
 		mAttendanceDate=(TextView)findViewById(R.id.tv_attendance_date);
 		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日"); 
 		Date curDate = new Date(System.currentTimeMillis());

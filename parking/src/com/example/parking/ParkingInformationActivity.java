@@ -37,7 +37,7 @@ public class ParkingInformationActivity extends Activity {
 		mParkNameTV = (TextView) findViewById(R.id.tv_parking_name);
 		mParkNameTV.setText(R.string.park_name_fixed);
 		mParkNumberTV = (TextView) findViewById(R.id.tv_parking_number);
-		mParkNumberTV.setText(R.string.park_number_fixed);
+		mParkNumberTV.setText("车场编号:" + this.getString(R.string.park_number_fixed));
 		mCarType = (Spinner) findViewById(R.id.sp_car_type);
 		mParkingType = (Spinner) findViewById(R.id.sp_parking_type);
 		mLocationNumber = (Spinner) findViewById(R.id.sp_parking_location);

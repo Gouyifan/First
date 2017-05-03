@@ -18,7 +18,7 @@
             android:name="com.example.parking.LoginActivity"
             android:theme="@style/LabelTheme"
             android:label="录停车"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustPan|stateHidden" >
             <intent-filter>  
             <action android:name="android.intent.action.MAIN" />  
             <category android:name="android.intent.category.LAUNCHER" />  

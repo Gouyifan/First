@@ -119,13 +119,13 @@ public class HistoryRecordFragment extends Fragment {
 	    	titleMap.put("startTime","入场时间");
 	    	titleMap.put("leaveTime", "离场时间");
 	    	titleMap.put("parkingLocation","泊位");
-	    	titleMap.put("expense", "费用");
+	    	titleMap.put("expense", "支付");
             list.add(titleMap); 
 	        try {
+	        	int count = 0;
 	        	do{
-	        		Log.e("yifan","paymentpattern : " + cursor.getString(cursor.getColumnIndex("paymentpattern")));
+	        		      Log.e("yifan","paymentpattern : " + cursor.getString(cursor.getColumnIndex("paymentpattern")));
 	        	    	  if((cursor.getString(cursor.getColumnIndex("paymentpattern"))).equals(paymentState) ){
-	        	    		  Log.e("yifan", "+1" );
 	        	    		  Map<String, Object> map=new HashMap<String, Object>();
 	        	    		  map.put("licensePlateNumber", cursor.getString(cursor.getColumnIndex("licenseplate")));
 	        	    		  map.put("parkingLocation", cursor.getInt(cursor.getColumnIndex("locationnumber"))+"");
@@ -142,8 +142,12 @@ public class HistoryRecordFragment extends Fragment {
 		        	    		  map.put("expense", cursor.getString(cursor.getColumnIndex("expense")));
 	        	    		  }
 	      		              list.add(map); 
+	      		              count++;
 	        	    	  }
 	        	      }while(cursor.moveToNext());
+	        	     if(count==0){
+	        	    	 list.remove(titleMap); 
+	        	     }
 	        }
 	        catch (Exception e) {
 	                e.printStackTrace();

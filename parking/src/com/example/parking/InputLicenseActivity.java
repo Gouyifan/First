@@ -24,12 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class InputLicenseActivity extends FragmentActivity {
+	private static final int LICENSE_PLATE_NUMBER_SIZE=7;
 	private static final int ARRIVING_TYPE=101;
 	private static final int LEAVING_TYPE=102;
 	private static final int EVENT_UNFINISHED_LICENSE_PLATE=201;
 	private static final int EVENT_ESCAPE_LICENSE_PLATE=202;
 	private static final int EVENT_ENTER_PARK_INFORMATION=203;
 	private static final int EVENT_NOT_EXISTS_LICENSE_PLATE=204;
+	private static final int EVENT_INVALID_LICENSE_PLATE=205;
 	private static final int EVENT_SCAN_STATE_NOTIFY=301;
 	private Fragment mNumberFragment;
 	private Fragment mLetterFragment;
@@ -105,6 +107,12 @@ public class InputLicenseActivity extends FragmentActivity {
     	mLicensePlateET.setInputType(InputType.TYPE_NULL);  
     	mNextBT.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
+				if(mLicensePlateET.getText().length() !=LICENSE_PLATE_NUMBER_SIZE){
+            		Message msg = new Message();
+            		msg.what=EVENT_INVALID_LICENSE_PLATE;
+            		mHandler.sendMessage(msg);
+            		return;
+				}
 				new SQLThread().start();
 			}
 		});
@@ -252,6 +260,9 @@ public class InputLicenseActivity extends FragmentActivity {
                 	break;
                 case EVENT_SCAN_STATE_NOTIFY:
                     Toast.makeText(getApplicationContext(), "扫码功能开发中", Toast.LENGTH_SHORT).show();
+            	    break;
+                case EVENT_INVALID_LICENSE_PLATE:
+                    Toast.makeText(getApplicationContext(), "请输入正确牌照", Toast.LENGTH_SHORT).show();
             	    break;
                 default:
                     break;

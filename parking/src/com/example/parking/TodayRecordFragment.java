@@ -105,7 +105,7 @@ public class TodayRecordFragment extends Fragment {
 	    	titleMap.put("startTime","入场时间");
 	    	titleMap.put("leaveTime", "离场时间");
 	    	titleMap.put("paymentState","支付状态");
-	    	titleMap.put("expense", "费用");
+	    	titleMap.put("expense", "支付金额");
             list.add(titleMap); 
 	    	Log.e("yifan", "count: " + cursor.getCount());
 	    	Log.e("yifan", "locationNumber: " + locationNumber);
