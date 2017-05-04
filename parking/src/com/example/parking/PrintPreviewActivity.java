@@ -149,7 +149,9 @@ public class PrintPreviewActivity extends Activity {
                 	.append(mFeeScaleTV.getText()).append("\n").append(mChargeStandardTV.getText())
                 	.append("\n").append(mSuperviseTelephoneTV.getText());
                 	mPrinter.printer_uart_on();
+                	//mPrinter.serialport_uart_on(doGetData());;
                     mPrinter.send(sb.toString());
+                	//mPrinter.send("hello");
                 	Toast.makeText(getApplicationContext(), "打印成功", Toast.LENGTH_SHORT).show();
                 	break;
                 default:

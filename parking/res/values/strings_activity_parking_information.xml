@@ -11,5 +11,6 @@
     <string name="parkingName">易华录停车场</string>
     <string name="parkingNumber">车场编号：1234</string>
     <string name="ok">确定</string>
-    <string name="cancel">退出</string>
+    <string name="camera">拍照</string>
+    <string name="photoTitleArriving">入场图片: </string>
 </resources>

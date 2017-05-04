@@ -19,6 +19,7 @@ public class DBAdapter {
     static final String KEY_LEAVE_TIME="leavetime";
     static final String KEY_EXPENSE="expense";
     static final String KEY_PAYMENT_PATTERN="paymentpattern";
+    static final String KEY_ARRIVING_IMAGE="arrivingimage";
     static final String TAG = "DBAdapter";  
       
     static final String DATABASE_NAME = "parkingDB";  
@@ -29,7 +30,7 @@ public class DBAdapter {
             "create table parkings( _id integer primary key autoincrement, " +   
             "licenseplate varchar(20), cartype varchar(20), parkingtype varchar(20), " +
             "locationnumber integer,starttime varchar(50),leavetime  varchar(50),expense  varchar(20), " +
-            "paymentpattern varchar(20));";  
+            "paymentpattern varchar(20),arrivingimage blob);";  
     final Context context;  
       
     DatabaseHelper DBHelper;  
@@ -85,7 +86,7 @@ public class DBAdapter {
 
     //insert parking information  into the database  
     public long insertParking(String licensePlate, String carType, String parkingType, int locationNumber,String startTime,
-    		String leaveTime, String expense, String paymentPattern)  
+    		String leaveTime, String expense, String paymentPattern,byte[] arrivingImage)  
     {  
         ContentValues initialValues = new ContentValues();  
         initialValues.put(KEY_LICENSE_PLATE, licensePlate);  
@@ -96,6 +97,7 @@ public class DBAdapter {
         initialValues.put(KEY_LEAVE_TIME, leaveTime);
         initialValues.put(KEY_EXPENSE, expense);
         initialValues.put(KEY_PAYMENT_PATTERN, paymentPattern);
+        initialValues.put(KEY_ARRIVING_IMAGE, arrivingImage);
         return db.insert(DATABASE_PARKING_TABLE, null, initialValues);  
     }
 
@@ -110,7 +112,7 @@ public class DBAdapter {
     {  
         return db.query(DATABASE_PARKING_TABLE, new String[]{ KEY_ROWID,KEY_LICENSE_PLATE,KEY_CAR_TYPE,
         		KEY_PARKING_TYPE,KEY_LOCATION_NUMBER,KEY_START_TIME,KEY_LEAVE_TIME,KEY_LEAVE_TIME,
-        		KEY_EXPENSE,KEY_PAYMENT_PATTERN}, null, null, null, null, null);  
+        		KEY_EXPENSE,KEY_PAYMENT_PATTERN,KEY_ARRIVING_IMAGE}, null, null, null, null, null);  
     }
 
     //get a particular parking  information
@@ -119,7 +121,7 @@ public class DBAdapter {
         Cursor mCursor =   
                 db.query(true, DATABASE_PARKING_TABLE, new String[]{ KEY_ROWID,KEY_LICENSE_PLATE,KEY_CAR_TYPE,
                 		KEY_PARKING_TYPE,KEY_LOCATION_NUMBER,KEY_START_TIME,KEY_LEAVE_TIME,
-                		KEY_EXPENSE,KEY_PAYMENT_PATTERN}, KEY_ROWID + "=" + rowId, null, null, null, null, null);  
+                		KEY_EXPENSE,KEY_PAYMENT_PATTERN,KEY_ARRIVING_IMAGE}, KEY_ROWID + "=" + rowId, null, null, null, null, null);  
         if (mCursor != null)  
             mCursor.moveToFirst();  
         return mCursor;  
@@ -131,7 +133,7 @@ public class DBAdapter {
         Cursor mCursor =   
                 db.query(true, DATABASE_PARKING_TABLE, new String[]{ KEY_ROWID,KEY_LICENSE_PLATE,KEY_CAR_TYPE,
                 		KEY_PARKING_TYPE,KEY_LOCATION_NUMBER,KEY_START_TIME,KEY_LEAVE_TIME,
-                		KEY_EXPENSE,KEY_PAYMENT_PATTERN}, KEY_LOCATION_NUMBER + "=" +"\"" +locationNumber + "\"", null, null, null, KEY_ROWID + " DESC", null);  
+                		KEY_EXPENSE,KEY_PAYMENT_PATTERN,KEY_ARRIVING_IMAGE}, KEY_LOCATION_NUMBER + "=" +"\"" +locationNumber + "\"", null, null, null, KEY_ROWID + " DESC", null);  
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -144,7 +146,7 @@ public class DBAdapter {
         Cursor mCursor =   
                 db.query(true, DATABASE_PARKING_TABLE, new String[]{ KEY_ROWID,KEY_LICENSE_PLATE,KEY_CAR_TYPE,
                 		KEY_PARKING_TYPE,KEY_LOCATION_NUMBER,KEY_START_TIME,KEY_LEAVE_TIME,
-                		KEY_EXPENSE,KEY_PAYMENT_PATTERN},KEY_LICENSE_PLATE + " = " + "\"" +licenseNumber + "\"", null, null, null, KEY_ROWID + " DESC", null);  
+                		KEY_EXPENSE,KEY_PAYMENT_PATTERN,KEY_ARRIVING_IMAGE},KEY_LICENSE_PLATE + " = " + "\"" +licenseNumber + "\"", null, null, null, KEY_ROWID + " DESC", null);  
         if (mCursor != null){
         	mCursor.moveToFirst();  	
         }
@@ -157,7 +159,7 @@ public class DBAdapter {
         Cursor mCursor =   
                 db.query(true, DATABASE_PARKING_TABLE, new String[]{ KEY_ROWID,KEY_LICENSE_PLATE,KEY_CAR_TYPE,
                 		KEY_PARKING_TYPE,KEY_LOCATION_NUMBER,KEY_START_TIME,KEY_LEAVE_TIME,
-                		KEY_EXPENSE,KEY_PAYMENT_PATTERN},KEY_START_TIME + " LIKE " + "\"" +time + "\"", null, null, null, KEY_ROWID + " DESC", null);  
+                		KEY_EXPENSE,KEY_PAYMENT_PATTERN,KEY_ARRIVING_IMAGE},KEY_START_TIME + " LIKE " + "\"" +time + "\"", null, null, null, KEY_ROWID + " DESC", null);  
         if (mCursor != null){
         	mCursor.moveToFirst();  	
         }
@@ -166,7 +168,7 @@ public class DBAdapter {
 
     //updates a parking information  
     public boolean updateParking(long rowId, String licensePlate, String carType, String parkingType, int locationNumber,String startTime,
-    		String leaveTime, String expense, String paymentPattern)  
+    		String leaveTime, String expense, String paymentPattern,byte[] arrivingImage)  
     {  
         ContentValues values = new ContentValues();  
         values.put(KEY_LICENSE_PLATE, licensePlate);  
@@ -177,6 +179,7 @@ public class DBAdapter {
         values.put(KEY_LEAVE_TIME, leaveTime);
         values.put(KEY_EXPENSE, expense);
         values.put(KEY_PAYMENT_PATTERN, paymentPattern);
+        values.put(KEY_ARRIVING_IMAGE, arrivingImage);
         return db.update(DATABASE_PARKING_TABLE, values, KEY_ROWID + "=" +rowId, null) > 0;  
     }  
 
