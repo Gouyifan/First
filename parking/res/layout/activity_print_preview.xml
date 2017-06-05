@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background = "#FFFFFF"
@@ -17,6 +17,7 @@
         android:textColor="@color/orange"/>
          <TextView 
         android:id="@+id/tv_user_number_print"
+        android:layout_below="@+id/tv_print_preview_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -28,6 +29,7 @@
         android:textSize="15sp"/>
         <TextView 
         android:id="@+id/tv_parking_name_print"
+        android:layout_below="@+id/tv_user_number_print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -38,7 +40,9 @@
         android:text="@string/parkingNamePrint"
         android:textSize="15sp"/>
         <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/linear_parking_number_print"
+        android:layout_below="@+id/tv_parking_name_print"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
         <TextView 
@@ -68,6 +72,7 @@
         </LinearLayout>        
        <TextView 
         android:id="@+id/tv_license_number_print"
+        android:layout_below="@+id/linear_parking_number_print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -78,13 +83,16 @@
         android:text="@string/licensePlateNumberPrint"
         android:textSize="15sp"/>
         <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/linear_park_type_print"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_license_number_print"
         android:orientation="horizontal" >
            <TextView 
             android:id="@+id/tv_car_type_print"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="3dp"
@@ -94,8 +102,9 @@
             android:textSize="15sp"/>
            <TextView 
             android:id="@+id/tv_parking_type_print"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1" 
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="3dp"
@@ -106,6 +115,7 @@
        </LinearLayout>
        <TextView 
         android:id="@+id/tv_start_time_print"
+        android:layout_below="@+id/linear_park_type_print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -117,6 +127,7 @@
         android:textSize="15sp"/>
        <TextView 
         android:id="@+id/tv_leave_time_print"
+        android:layout_below="@+id/tv_start_time_print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -138,13 +149,16 @@
         android:text="@string/parkingTimePrint"
         android:textSize="15sp"/>-->
         <LinearLayout 
-        android:layout_width="wrap_content"
+        android:id="@+id/linear_expense_print"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_leave_time_print"
         android:orientation="horizontal" >
         <TextView 
         android:id="@+id/tv_expense_total_print"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="3dp"
@@ -154,8 +168,9 @@
         android:textSize="15sp"/>
         <TextView 
         android:id="@+id/tv_fee_scale_print"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="3dp"
@@ -166,6 +181,7 @@
         </LinearLayout>
        <TextView 
         android:id="@+id/tv_charge_standard_print"
+        android:layout_below="@+id/linear_expense_print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -177,6 +193,7 @@
         android:textSize="15sp"/>
         <TextView 
         android:id="@+id/tv_supervise_telephone_print"
+        android:layout_below="@+id/tv_charge_standard_print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -187,16 +204,16 @@
         android:text="@string/superviseTelephonePrint"
         android:textSize="15sp"/>
         <LinearLayout
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_below="@+id/tv_supervise_telephone_print"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+         android:gravity="bottom"
+         android:layout_alignParentBottom="true">
             <Button 
               android:id="@+id/bt_confirm_print"
               android:background = "@drawable/ic_ok"
               android:layout_width="0dp"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:layout_weight="1"
               android:gravity="center"
               android:text="@string/confirmPrint" />
@@ -204,9 +221,9 @@
               android:id="@+id/bt_cancel_print"
               android:background = "@drawable/ic_ok"
               android:layout_width="0dp"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:layout_weight="1"
               android:gravity="center"
               android:text="@string/cancelPrint" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

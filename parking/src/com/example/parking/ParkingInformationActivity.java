@@ -2,9 +2,14 @@ package com.example.parking;
 
 import java.io.ByteArrayOutputStream;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -96,6 +101,9 @@ public class ParkingInformationActivity extends Activity {
 			}
 		});
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	private class InsertOnclickListener implements Button.OnClickListener{
@@ -148,6 +156,9 @@ public class ParkingInformationActivity extends Activity {
             		Message msg = new Message();
                     msg.what = EVENT_INSERT_SUCCESS;
                     mHandler.sendMessage(msg);
+                    Intent intentBack = new Intent();
+                    intentBack.setAction("BackMain");
+                    sendBroadcast(intentBack);
                 	Intent intent = new Intent(ParkingInformationActivity.this,MainActivity.class);
     				startActivity(intent);
     				finish();
@@ -261,5 +272,53 @@ public byte[] converImageToByte(Bitmap bitmap) {
 	    }
     }
 
+private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+			finish();
+		}
+	}            
+}; 
+
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+    unregisterReceiver(mReceiver);
+}
+/**
+ * Add for request to insert new parking record
+public void requestInsert()throws ParseException, IOException, JSONException{
+	  HttpClient httpClient = new DefaultHttpClient();
+	  String strurl = "//此处url待定";
+	  HttpPost request = new HttpPost(strurl);
+	  request.addHeader("Accept","application/json");
+	  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+	  JSONObject param = new JSONObject();//定义json对象
+	  param.put("type", "insert");
+	  param.put("licenseplatenumber", mEmail);
+	  param.put("cartype", mPassword);
+	  param.put("parktype", mEmail);
+	  param.put("locationnumber", mPassword);
+	  param.put("starttime", mPassword);
+	  param.put("arrivingphoto",Base64.encodeToString(converImageToByte(mPhoto),Base64.DEFAULT))
+	  Log.e("yifan", param.toString());
+	  StringEntity se = new StringEntity(param.toString());
+	  request.setEntity(se);//发送数据
+	  HttpResponse httpResponse = httpClient.execute(request);//获得相应
+	  int code = httpResponse.getStatusLine().getStatusCode();
+	  if(code==HttpStatus.SC_OK){
+		  String strResult = EntityUtils.toString(httpResponse.getEntity());
+		  JSONObject result = new JSONObject(strResult);
+		  String insertResult = (String) result.get("insertresult");
+	  }else{
+		  Log.e("yifan", Integer.toString(code));
+	  }
+	 }
+//Client's json:{ "type":"insert", "licenseplatenumber":"津HG9025", "cartype":"小客车", "parktype":"普通停车", "locationnumber":1, "starttime":"2017-05-04 15:49:20","arrivingphont",xxxx}
+//Server's json:{"insertresult":"ok"}
+//Server's json:{"insertresult":"exist"}
+//Server's json:{"insertresult":"escape"}
+*/
 }
 

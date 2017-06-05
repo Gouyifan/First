@@ -5,9 +5,11 @@ import com.example.parking.TestLeavingActivity.TimeThread;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -85,7 +87,8 @@ public class LeavingActivity extends Activity {
 		        	mPaymentType = PAYMENT_TYPE_ALIPAY; 
 			    }else if (mWechatpayPaymentRB.getId() == checkedId){
 		        	mPaymentType = PAYMENT_TYPE_WECHATPAY; 
-			    } 
+			    }
+			    mConfirmPaymentBT.setEnabled(true);
 			  } 
 			});
 /*		mPrintBT=(Button)findViewById(R.id.bt_print_leaving);
@@ -97,6 +100,7 @@ public class LeavingActivity extends Activity {
 			}
 		});*/
 		mConfirmPaymentBT=(Button)findViewById(R.id.bt_confirm_payment_leaving);
+		mConfirmPaymentBT.setEnabled(false);
 		mConfirmPaymentBT.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
@@ -104,6 +108,9 @@ public class LeavingActivity extends Activity {
     				Message msg = new Message();
                     msg.what = EVENT_PAYMENT_FINISHED;
                     mHandler.sendMessage(msg);
+                    Intent intentBack = new Intent();
+                    intentBack.setAction("BackMain");
+                    sendBroadcast(intentBack);
 					Intent intent = new Intent(LeavingActivity.this,MainActivity.class);
 					startActivity(intent);
 					return;
@@ -150,6 +157,10 @@ public class LeavingActivity extends Activity {
 		});
         getActionBar().setDisplayHomeAsUpEnabled(true);
 		new SQLThread().start();
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        filter.addAction("BackMain");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	private Handler mHandler = new Handler() {
@@ -270,6 +281,9 @@ public class LeavingActivity extends Activity {
     				Message msg = new Message();
                     msg.what = EVENT_ESCAPE_RECORD_SUCCESS;
                     mHandler.sendMessage(msg);
+                    Intent intentBack = new Intent();
+                    intentBack.setAction("BackMain");
+                    sendBroadcast(intentBack);
     				Intent intent = new Intent(LeavingActivity.this,MainActivity.class);
     				startActivity(intent);
             	}else{
@@ -320,4 +334,51 @@ public class LeavingActivity extends Activity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}else if(intent.getAction()!=null && intent.getAction().equals("BackMain")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+	/**
+	 * Add for request to update parking record and finish parking
+	public void requestUpdate()throws ParseException, IOException, JSONException{
+		  HttpClient httpClient = new DefaultHttpClient();
+		  String strurl = "//此处url待定";
+		  HttpPost request = new HttpPost(strurl);
+		  request.addHeader("Accept","application/json");
+		  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+		  JSONObject param = new JSONObject();//定义json对象
+		  param.put("type", "update");
+		  param.put("licenseplatenumber", mLicensePlateNumber);
+		  param.put("leavetime", mLeaveTime);
+		  param.put("paymentpattern", mPaymentPattern);
+		  param.put("expense", mExpense);
+		  Log.e("yifan", param.toString());
+		  StringEntity se = new StringEntity(param.toString());
+		  request.setEntity(se);//发送数据
+		  HttpResponse httpResponse = httpClient.execute(request);//获得响应
+		  int code = httpResponse.getStatusLine().getStatusCode();
+		  if(code==HttpStatus.SC_OK){
+			  String strResult = EntityUtils.toString(httpResponse.getEntity());
+			  String updateResult = (String) result.get("updateresult");
+		  }else{
+			  Log.e("yifan", Integer.toString(code));
+		  }
+		 }
+	//Client's json:{ "type":"update", "licenseplatenumber":"津HG025", "leavetime":"2017-05-04 16:50:25", "paymentpattern":"逃费", "expense":"0元" }
+    //Server's json:{"updateResult":"ok"}
+    //Server's json:{"updateResult":"fail"}
+	*/
 }

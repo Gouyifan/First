@@ -2,7 +2,10 @@ package com.example.parking;
 
 import com.example.parking.R.color;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,7 +14,9 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -104,7 +109,24 @@ public class InputLicenseActivity extends FragmentActivity {
 				mHandler.sendMessage(msg);
 			}
 		});
-    	mLicensePlateET.setInputType(InputType.TYPE_NULL);  
+    	mLicensePlateET.setInputType(InputType.TYPE_NULL);
+    	mLicensePlateET.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            	if(mLicensePlateET.getText()!=null && mLicensePlateET.getText().length()>LICENSE_PLATE_NUMBER_SIZE){
+            		Message msg = new Message();
+            		msg.what=EVENT_INVALID_LICENSE_PLATE;
+            		mHandler.sendMessage(msg);
+            	}
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+            }
+    	});
     	mNextBT.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
 				if(mLicensePlateET.getText().length() !=LICENSE_PLATE_NUMBER_SIZE){
@@ -117,6 +139,10 @@ public class InputLicenseActivity extends FragmentActivity {
 			}
 		});
     	getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        filter.addAction("BackMain");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	private void changeFragment(int resId) {  
@@ -280,4 +306,55 @@ public class InputLicenseActivity extends FragmentActivity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+	 
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}else if(intent.getAction()!=null && intent.getAction().equals("BackMain")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+    
+	/**
+	 * Add for request to insert new parking record
+	public void requestSearchLeavingInformation()throws ParseException, IOException, JSONException{
+		  HttpClient httpClient = new DefaultHttpClient();
+		  String strurl = "//此处url待定";
+		  HttpPost request = new HttpPost(strurl);
+		  request.addHeader("Accept","application/json");
+		  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+		  JSONObject param = new JSONObject();//定义json对象
+		  param.put("type", "leavinginformationsearch");
+		  param.put("licenseplatenumber", mLicensePlateET.getText().toString());
+		  Log.e("yifan", param.toString());
+		  StringEntity se = new StringEntity(param.toString());
+		  request.setEntity(se);//发送数据
+		  HttpResponse httpResponse = httpClient.execute(request);//获得相应
+		  int code = httpResponse.getStatusLine().getStatusCode();
+		  if(code==HttpStatus.SC_OK){
+			  String strResult = EntityUtils.toString(httpResponse.getEntity());
+			  JSONObject result = new JSONObject(strResult);
+			  String searchResult = (String) result.get("searchresult");
+			  if(searchResult=="ok"){
+			      String startTime = (String) result.get("starttime");
+			      String feeScale = (String) result.get("feescale");
+			  }
+		  }else{
+			  Log.e("yifan", Integer.toString(code));
+		  }
+		 }
+	//Client's json:{ "type":"leavinginformationsearch"}
+	//Server's json:{"searchresult":"ok", "starttime":"2017-05-04 15:49:20", "feescale":"5元/次"}
+	//Server's json:{"searchresult":"inexistence"}
+	*/
 }

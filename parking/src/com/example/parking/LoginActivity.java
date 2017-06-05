@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -55,6 +58,10 @@ public class LoginActivity extends Activity {
     private static final String SAVE_FILE_NAME = "save_spref";
 	private static final int ATTENDANCE_TYPE_START=301;
 	private static final int ATTENDANCE_TYPE_END=302;
+	private static final int ERROR_TYPE_EMAIL=401;
+	private static final int ERROR_TYPE_PASSWD=402;
+	private static final int ERROR_TYPE_NO_ERROR=403;
+	private int mErrorType = ERROR_TYPE_NO_ERROR;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,6 +113,9 @@ public class LoginActivity extends Activity {
             }
         });
         initView();
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	@Override
@@ -179,7 +189,7 @@ public class LoginActivity extends Activity {
 
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
+			mPasswordView.setError(getString(R.string.error_passwd_required));
 			focusView = mPasswordView;
 			cancel = true;
 		} else if (mPassword.length() < 4) {
@@ -190,7 +200,7 @@ public class LoginActivity extends Activity {
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
+			mEmailView.setError(getString(R.string.error_email_required));
 			focusView = mEmailView;
 			cancel = true;
 		} else if (!mEmail.contains("@")) {
@@ -274,7 +284,13 @@ public class LoginActivity extends Activity {
 				String[] pieces = credential.split(":");
 				if (pieces[0].equals(mEmail)) {
 					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
+					if(pieces[1].equals(mPassword)){
+						return true;
+					}else{
+						mErrorType = ERROR_TYPE_PASSWD;
+					}
+				}else{
+					mErrorType = ERROR_TYPE_EMAIL;
 				}
 			}
 
@@ -296,11 +312,18 @@ public class LoginActivity extends Activity {
 				bundle.putInt("attendancetype", ATTENDANCE_TYPE_START);
 				intent.putExtras(bundle);
 				startActivity(intent);
+				finish();
 			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+				if(mErrorType == ERROR_TYPE_EMAIL){
+					mEmailView.setError(getString(R.string.error_incorrect_email));
+					mEmailView.requestFocus();
+				}else if(mErrorType == ERROR_TYPE_PASSWD){
+					mPasswordView
+					.setError(getString(R.string.error_incorrect_password));
+					mPasswordView.requestFocus();
+				}
 			}
+			mErrorType=ERROR_TYPE_NO_ERROR;
 		}
 
 		@Override
@@ -309,4 +332,56 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 		}
 	}
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+	/**
+	 * Add for request login's state
+	public void login(String name, String pwd)throws ParseException, IOException, JSONException{
+		  HttpClient httpClient = new DefaultHttpClient();
+		  String strurl = "//此处url待定";
+		  HttpPost request = new HttpPost(strurl);
+		  request.addHeader("Accept","application/json");
+		  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+		  JSONObject param = new JSONObject();//定义json对象
+		  param.put("type", "login");
+		  param.put("userinfo", mEmail);
+		  param.put("passwd", mPassword);
+		  Log.e("yifan", param.toString());
+		  StringEntity se = new StringEntity(param.toString());
+		  request.setEntity(se);//发送数据
+		  HttpResponse httpResponse = httpClient.execute(request);//获得响应
+		  int code = httpResponse.getStatusLine().getStatusCode();
+		  if(code==HttpStatus.SC_OK){
+			  String strtResult = EntityUtils.toString(httpResponse.getEntity());
+			  JSONObject result = new JSONObject(strtResult);
+			  String loginResult = (String) result.get("loginresult");
+			  if(loginResult.equals("ok")){
+				  String parkName = (String) result.get("parkname");
+				  String parkNumber = (String) result.get("parknumber");
+				  String userNumber = (String) result.get("usernumber");
+				  String workStartTIme = (String) result.get("workstarttime");
+				  String workEndTIme = (String) result.get("workendtime");
+			  }
+		  }else{
+			  Log.e("yifan", Integer.toString(code));
+		  }
+		 }
+	//Client's json:{ "type":"login", "userinfo":"gouyf@ehualu.com", "passwd":"123456"}
+	//Server's json:{ "loginresult":"ok", "usernumber":"101884", "parkname":"易华录停车场", "parknumber":"P1234", "workstarttime":"9:00", "workendtime":"17:30"}
+    //Server's json:{ "loginresult":"wrongemail"}
+    //Server's json:{ "loginresult":"wrongpasswd"}
+   */
 }

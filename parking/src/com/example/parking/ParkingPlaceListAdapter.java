@@ -6,6 +6,8 @@ import java.util.Map;
 import android.R.color;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +65,22 @@ public class ParkingPlaceListAdapter extends BaseAdapter {
             zujian=(Zujian)convertView.getTag();  
         }  
         //绑定数据  
-        zujian.parkingNumberTV.setText((String)data.get(position).get("parkingNumber"));  
+        String parkingNumber = (String)data.get(position).get("parkingNumber");
+        if(parkingNumber.length()==1){
+            zujian.parkingNumberTV.setText("A000" + parkingNumber);  
+        }else if(parkingNumber.length()==2){
+            zujian.parkingNumberTV.setText("A00" + parkingNumber);  
+        }
         zujian.parkingNumberTV.setBackgroundColor(context.getResources().getColor(R.color.white));
         zujian.licensePlateNumberTV.setText((String)data.get(position).get("licensePlateNumber"));
+        Log.e("gouyifan","licensePlateNumber:" + (String)data.get(position).get("licensePlateNumber"));
+        if(data.get(position).get("inUseIcon")!=null){
+            Drawable drawable = context.getResources().getDrawable((Integer)data.get(position).get("inUseIcon"));
+    		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
+    		zujian.licensePlateNumberTV.setCompoundDrawables(drawable, null, null, null);//画在左边
+        }else{
+    		zujian.licensePlateNumberTV.setCompoundDrawables(null, null, null, null);//画在左边
+        }
         return convertView;  
     }  
   

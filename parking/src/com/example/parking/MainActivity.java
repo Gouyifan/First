@@ -2,14 +2,19 @@ package com.example.parking;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private static final int ARRIVING_TYPE=101;
@@ -25,6 +30,7 @@ public class MainActivity extends Activity {
 	private Button mQueryButton;
 	private Button mWorkAttendanceButton;
 	private Button mUserCenterButton;
+    private long mExitTime = 0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +96,52 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        filter.addAction("BackMain");  
+        registerReceiver(mReceiver, filter); 
 	}
 	 
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}else if(intent.getAction()!=null && intent.getAction().equals("BackMain")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+            if((System.currentTimeMillis() - mExitTime) > 2000){  
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+                mExitTime = System.currentTimeMillis();   
+            } else {
+                Intent intentFinsh = new Intent();  
+                intentFinsh.setAction("ExitApp");  
+                sendBroadcast(intentFinsh); 
+                exit();
+                System.exit(0);
+            }
+            return true;   
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    public void exit(){
+    	Intent startMain = new Intent(Intent.ACTION_MAIN);
+    	startMain.addCategory(Intent.CATEGORY_HOME);
+    	startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    	startActivity(startMain);
+    	android.os.Process.killProcess(android.os.Process.myPid());
+    }
 }

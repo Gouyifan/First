@@ -1,7 +1,10 @@
 package com.example.parking;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -52,8 +55,6 @@ public class ResetPasswdActivity extends Activity {
 					Message msg = new Message();
 	                msg.what = EVENT_MODIFY_SUCCESS;
 	                mHandler.sendMessage(msg);
-					Intent intent = new Intent(ResetPasswdActivity.this,UserCenterActivity.class);
-					startActivity(intent);
 					finish();
 				}
 			}
@@ -62,12 +63,13 @@ public class ResetPasswdActivity extends Activity {
 		mCancelBT.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Intent intent = new Intent(ResetPasswdActivity.this,UserCenterActivity.class);
-				startActivity(intent);
 				finish();
 		    }
 		});
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        registerReceiver(mReceiver, filter); 
 	}
 	
 	private Handler mHandler = new Handler() {
@@ -103,4 +105,50 @@ public class ResetPasswdActivity extends Activity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+	/**
+	 * Add for reset passwd
+	public void resetPasswd()throws ParseException, IOException, JSONException{
+		  HttpClient httpClient = new DefaultHttpClient();
+		  String strurl = "//此处url待定";
+		  HttpPost request = new HttpPost(strurl);
+		  request.addHeader("Accept","application/json");
+		  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+		  JSONObject param = new JSONObject();//定义json对象
+		  param.put("type", "reset");
+		  param.put("oldpasswd", mOldPasswdET.getText().toString());
+		  param.put("newpasswd", mNewPasswdET.getText().toString());
+		  param.put("renewpasswd", mRenewPasswdET.getText().toString());
+		  Log.e("yifan", param.toString());
+		  StringEntity se = new StringEntity(param.toString());
+		  request.setEntity(se);//发送数据
+		  HttpResponse httpResponse = httpClient.execute(request);//获得响应
+		  int code = httpResponse.getStatusLine().getStatusCode();
+		  if(code==HttpStatus.SC_OK){
+			  String strtResult = EntityUtils.toString(httpResponse.getEntity());
+			  JSONObject result = new JSONObject(strtResult);
+			  String resetResult = (String) result.get("resetresult");
+		  }else{
+			  Log.e("yifan", Integer.toString(code));
+		  }
+		 }
+	//Client's json:{ "type":"reset", "oldpasswd":"123456", "newpasswd":"654321", "renewpasswd":"654321"}
+	//Server's json:{ "resetResult":"ok"}
+	//Server's json:{ "resetResult":"wrongoldpasswd"}
+	//Server's json:{ "resetResult":"inconsistentnewpasswd"}
+   */
 }

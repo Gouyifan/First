@@ -7,9 +7,13 @@ import java.util.Map;
 
 import android.R.color;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -72,6 +76,10 @@ public class ParkingSpaceActivity extends Activity {
             }
         });
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        filter.addAction("BackMain"); 
+        registerReceiver(mReceiver, filter); 
 	}
     public List<Map<String, Object>> getData(){  
         List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();  
@@ -80,6 +88,9 @@ public class ParkingSpaceActivity extends Activity {
             map.put("parkingNumber",  i+"");
             String licenseNumber = getLicenseNumber(i);
             map.put("licensePlateNumber", licenseNumber);
+            if(licenseNumber!=null){
+            	map.put("inUseIcon", R.drawable.ic_car_in_parking_24px);
+            }
             if(licenseNumber!=null){
             	mIdleLocationNumber--;
             }
@@ -121,9 +132,62 @@ public class ParkingSpaceActivity extends Activity {
 	    return super.onOptionsItemSelected(item);  
 	  }  
     
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}else if(intent.getAction()!=null && intent.getAction().equals("BackMain")){
+				finish();
+			}
+		}            
+    }; 
     
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
     
-    
+	/**
+	 * Add for request to search licensenumber for each location number 
+	public void requestSearchSpace()throws ParseException, IOException, JSONException{
+		  HttpClient httpClient = new DefaultHttpClient();
+		  String strurl = "//此处url待定";
+		  HttpPost request = new HttpPost(strurl);
+		  request.addHeader("Accept","application/json");
+		  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+		  JSONObject param = new JSONObject();//定义json对象
+		  param.put("type", "spacesearch");
+		  param.put("size", MAX_LOCATION_SIZE);
+		  Log.e("yifan", param.toString());
+		  StringEntity se = new StringEntity(param.toString());
+		  request.setEntity(se);//发送数据
+		  HttpResponse httpResponse = httpClient.execute(request);//获得相应
+		  int code = httpResponse.getStatusLine().getStatusCode();
+		  if(code==HttpStatus.SC_OK){
+			  String strResult = EntityUtils.toString(httpResponse.getEntity());
+			  JSONObject result = new JSONObject(strtResult);
+			  String data=result.getString("data");
+			  JSONObject jsonData = new JSONObject(data);
+			  if(jsonData.get("list")!=null){  
+                     JSONArray array = jsonData.getJSONArray("list");  
+                     for (int i = 0; i < jarr.length(); i++) {                                
+                      JSONObject jsonNumber = (JSONObject) array.get(i);   
+                      int locationNumber = i;             
+                      Sring licenseNumber = jsonNumber.getString("i");         
+                }  
+		  }else{
+			  Log.e("yifan", Integer.toString(code));
+		  }
+		 }
+	//Client's json:{ "type":"spacesearch", "size":10}
+	//Server's json: {data:{list:{"1":"津HG9025"}, {"2":""}, {"3":""}, {"4":"津HG9026"}, {"5":""}, {"6":""}, {"7":"津HG9027"}, {"8":""}, {"9":"津HG9028"}, {"10":"津HG9029"}}}
+	*/    
+	
+	
+	
+	
 /*	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

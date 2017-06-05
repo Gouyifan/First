@@ -8,7 +8,10 @@ import java.util.Map;
 import com.example.parking.R.drawable;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +39,9 @@ public class MessageCenterActivity extends Activity {
             }
         });
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        registerReceiver(mReceiver, filter); 
 	}
 
     public List<Map<String, Object>> getData(){  
@@ -73,4 +79,61 @@ public class MessageCenterActivity extends Activity {
 	    return super.onOptionsItemSelected(item);  
 	  }  
 	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+	/**
+	 * Add for request message
+	public void requestMessage()throws ParseException, IOException, JSONException{
+		  HttpClient httpClient = new DefaultHttpClient();
+		  String strurl = "//此处url待定";
+		  HttpPost request = new HttpPost(strurl);
+		  request.addHeader("Accept","application/json");
+		  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+		  JSONObject param = new JSONObject();//定义json对象
+		  param.put("type", "requestmessage");
+		  Log.e("yifan", param.toString());
+		  StringEntity se = new StringEntity(param.toString());
+		  request.setEntity(se);//发送数据
+		  HttpResponse httpResponse = httpClient.execute(request);//获得响应
+		  int code = httpResponse.getStatusLine().getStatusCode();
+		  if(code==HttpStatus.SC_OK){
+			  String strResult = EntityUtils.toString(httpResponse.getEntity());
+			  JSONObject jsonData1 = new JSONObject(strResult);
+		      if(jsonData1.get("list")!=null){  
+                 JSONArray array = jsonData1.getJSONArray("list");  
+                 for (int i = 0; i < array.length(); i++) {                                
+                  JSONObject jsonData2 = (JSONObject) array.get(i);
+                  if(jsonDataDetail.get("list")!=null){   
+                      JSONArray array2 = jsonData2.getJSONArray("list");  
+                     for (int i = 0; i < array2.length(); i++) {
+                         JSONObject jsonData3 = (JSONObject) array.get(i);
+                         String messageCenterTitle = (String) jsonData3.get("messagecentertitle");
+			             String messageCenterDetail = (String) jsonData3.get("messagecenterdetail");
+			             String messageCenterTime = (String) jsonData3.get("messagecentertime");
+			             String messageCenterDetailHide = (String) jsonData3.get("messagecenterdetailhide");
+                     }                              
+            }  
+		      JSONObject jsonData = new JSONObject(data);
+		  }else{
+			  Log.e("yifan", Integer.toString(code));
+		  }
+		 }
+	//Client's json:{ "type":"requestmessage"}
+	//Server's json:{"list":{"list":{"messagecentertitle":"考勤通知", "messagecenterdetail":"您5月4日出现一次考勤异常", "messagecentertime":“2017-05-04 15:49:20”, "messagecenterdetailhide":“您5月4日上班打卡时间08:40:36(上班时间9:00)，
+                		                                  下班打卡时间15:30:23(下班时间17:30)，存在异常，请联系考勤员确认。”},
+	 //                                        "list":{"messagecentertitle":"停车通知", "messagecenterdetail":"您5月4日出现一次停车逃费现象", "messagecentertime":“2017-05-04 16:50:25”, "messagecenterdetailhide":“4月25日出现一次停车逃费现象，入场时间11:15:36，
+                		                                  牌照号津A00001，泊位号6，请联系稽查员确认。”}}}
+	*/
 }

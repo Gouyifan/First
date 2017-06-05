@@ -9,8 +9,11 @@ import com.example.parking.R.drawable;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,18 +39,31 @@ public class UserCenterActivity extends Activity {
                 String userCenterFunction=(String)map.get("userCenterFunction");
                 if(userCenterFunction.equals("消息中心")){
                 	Intent intent = new Intent(UserCenterActivity.this,MessageCenterActivity.class);
-	        	    startActivity(intent);
+                	startActivityForResult(intent,0);
                 }else if(userCenterFunction.equals("重置密码")){
                 	Intent intent = new Intent(UserCenterActivity.this,ResetPasswdActivity.class);
-	        	    startActivity(intent);
+                	startActivityForResult(intent,1);
                 }else if(userCenterFunction.equals("退出账号")){
                 	showExitDialog();
                 }
             }
         });
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        registerReceiver(mReceiver, filter); 
 	}
 
+    @Override  
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
+        super.onActivityResult(requestCode, resultCode, data);  
+        if(requestCode==0){  
+            // TODO Auto-generated method stub  
+        }else if(requestCode==1){  
+            // TODO Auto-generated method stub  
+        }
+    } 
+    
     public List<Map<String, Object>> getData(){  
         List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();  
         for (int i = 1; i <= 3; i++) {  
@@ -78,6 +94,9 @@ public class UserCenterActivity extends Activity {
         exitDialog.setPositiveButton("确定",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent intentFinsh = new Intent();  
+                intentFinsh.setAction("ExitApp");  
+                sendBroadcast(intentFinsh); 
 				Intent intent = new Intent(UserCenterActivity.this,LoginActivity.class);
 				startActivity(intent);
 				finish();
@@ -102,4 +121,19 @@ public class UserCenterActivity extends Activity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

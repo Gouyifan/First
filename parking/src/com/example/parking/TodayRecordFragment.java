@@ -136,4 +136,52 @@ public class TodayRecordFragment extends Fragment {
 	                }
 	        }
 	    }
+	    
+		/**
+		 * Add for request to search detail information for licensenumber
+		public void requestSearchTodayRecord()throws ParseException, IOException, JSONException{
+			  HttpClient httpClient = new DefaultHttpClient();
+			  String strurl = "//此处url待定";
+			  HttpPost request = new HttpPost(strurl);
+			  request.addHeader("Accept","application/json");
+			  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+			  JSONObject param = new JSONObject();//定义json对象
+			  param.put("type", "todayrecordsearch");
+			  param.put("locationnumber", mLocationNumber);
+			  SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd%"); 
+			  Date curDate = new Date(System.currentTimeMillis());
+			  String date = formatter.format(curDate);
+			  param.put("date", date);
+			  Log.e("yifan", param.toString());
+			  StringEntity se = new StringEntity(param.toString());
+			  request.setEntity(se);//发送数据
+			  HttpResponse httpResponse = httpClient.execute(request);//获得响应
+			  int code = httpResponse.getStatusLine().getStatusCode();
+			  if(code==HttpStatus.SC_OK){
+				  String strResult = EntityUtils.toString(httpResponse.getEntity());
+				  JSONObject jsonData1 = new JSONObject(strResult);
+			      if(jsonData1.get("list")!=null){  
+                     JSONArray array = jsonData1.getJSONArray("list");  
+                     for (int i = 0; i < array.length(); i++) {                                
+                      JSONObject jsonData2 = (JSONObject) array.get(i);
+                      if(jsonDataDetail.get("list")!=null){   
+                          JSONArray array2 = jsonData2.getJSONArray("list");  
+                         for (int i = 0; i < array2.length(); i++) {
+                             JSONObject jsonData3 = (JSONObject) array.get(i);
+                             String licenseNumer = (String) jsonData3.get("licensenumber");
+				             String startTime = (String) jsonData3.get("starttime");
+				             String leaveTime = (String) jsonData3.get("leavetime");
+				             String paymentPattern = (String) jsonData3.get("paymentpattern");
+				             String expense = (String) jsonData3.get("expense");
+                         }                              
+                }  
+			      JSONObject jsonData = new JSONObject(data);
+			  }else{
+				  Log.e("yifan", Integer.toString(code));
+			  }
+			 }
+		//Client's json:{ "type":"todayrecordsearch", "locationnumber":1, "date", "2017-05-04"}
+		//Server's json:{"list":{"list":{"licensenumber":"津HG9025", "starttime":"2017-05-04 15:49:20", "leavetime":“2017-05-04 16:50:25”, "paymentpattern":"现金支付"， "expense":"5元"},
+		 //                                        "list":{"licensenumber":"津HG9025", "starttime":"2017-05-04 15:49:20", "leavetime":“2017-05-04 16:50:25”, "paymentpattern":"现金支付"， "expense":"5元"}}}
+		*/
 }

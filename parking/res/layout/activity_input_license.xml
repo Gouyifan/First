@@ -37,6 +37,20 @@
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal" >
+     <TextView
+       android:id="@+id/tv_location"
+       android:layout_width="0dip"
+       android:layout_height="wrap_content"
+       android:layout_weight="1"
+       android:gravity="center"
+       android:paddingLeft="10dp"
+       android:paddingRight="10dp"
+       android:paddingTop="10dp"
+       android:paddingBottom="10dp"
+       android:text="@string/location"
+       android:textSize="20sp" 
+       android:background="#EBEBEB"
+       android:textColor="@color/white" />
       <TextView
        android:id="@+id/tv_letter"
        android:layout_width="0dip"
@@ -65,20 +79,6 @@
        android:paddingBottom="10dp"
        android:background="#EBEBEB"
        android:textColor="@color/white"  />
-      <TextView
-       android:id="@+id/tv_location"
-       android:layout_width="0dip"
-       android:layout_height="wrap_content"
-       android:layout_weight="1"
-       android:gravity="center"
-       android:paddingLeft="10dp"
-       android:paddingRight="10dp"
-       android:paddingTop="10dp"
-       android:paddingBottom="10dp"
-       android:text="@string/location"
-       android:textSize="20sp" 
-       android:background="#EBEBEB"
-       android:textColor="@color/white" />
     </LinearLayout>
 
     <FrameLayout  

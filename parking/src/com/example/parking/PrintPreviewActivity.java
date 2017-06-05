@@ -2,7 +2,10 @@ package com.example.parking;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -100,6 +103,9 @@ public class PrintPreviewActivity extends Activity {
 				Message msg = new Message();
                 msg.what = EVENT_PRINT_SUCCESS;
                 mHandler.sendMessage(msg);
+                Intent intentBack = new Intent();
+                intentBack.setAction("BackMain");
+                sendBroadcast(intentBack);
 				Intent intent = new Intent(PrintPreviewActivity.this,MainActivity.class);
 				startActivity(intent);
 				finish();
@@ -110,6 +116,9 @@ public class PrintPreviewActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				if(mPayType==PAYMENT_TYPE_CASH){
+                    Intent intentBack = new Intent();
+                    intentBack.setAction("BackMain");
+                    sendBroadcast(intentBack);
 					Intent intent = new Intent(PrintPreviewActivity.this,MainActivity.class);
 					startActivity(intent);
 					finish();
@@ -120,7 +129,7 @@ public class PrintPreviewActivity extends Activity {
 				}
 			}
 		});
-		mPrinter = new PrinterClass();
+/*		mPrinter = new PrinterClass();
 		mPrinter.setPrinterResponseMessageListener(new PrinterClass.PrinterResponseMessageListener() {
             public void response(byte[] RecMessage) {
                 if(mRecindex ==1){
@@ -129,8 +138,11 @@ public class PrintPreviewActivity extends Activity {
                 	//TODO
                 }
             }
-        });
+        });*/
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	private Handler mHandler = new Handler() {
@@ -148,11 +160,11 @@ public class PrintPreviewActivity extends Activity {
                 	.append("\n").append(mExpenseTotalTV.getText()).append("  ")
                 	.append(mFeeScaleTV.getText()).append("\n").append(mChargeStandardTV.getText())
                 	.append("\n").append(mSuperviseTelephoneTV.getText());
-                	mPrinter.printer_uart_on();
+                	//mPrinter.printer_uart_on();
                 	//mPrinter.serialport_uart_on(doGetData());;
-                    mPrinter.send(sb.toString());
+                    //mPrinter.send(sb.toString());
                 	//mPrinter.send("hello");
-                	Toast.makeText(getApplicationContext(), "打印成功", Toast.LENGTH_SHORT).show();
+                	Toast.makeText(getApplicationContext(), "该设备不支持打印功能", Toast.LENGTH_SHORT).show();
                 	break;
                 default:
                     break;
@@ -175,4 +187,19 @@ public class PrintPreviewActivity extends Activity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

@@ -1,6 +1,9 @@
 package com.example.parking;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -39,6 +42,10 @@ public class ParkingSpaceDetailActivity extends FragmentActivity {
         changeSelect(R.id.parkingInformation);
         changeFragment(R.id.parkingInformation);
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        filter.addAction("BackMain");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	private void changeFragment(int resId) {  
@@ -101,4 +108,51 @@ public class ParkingSpaceDetailActivity extends FragmentActivity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}else if(intent.getAction()!=null && intent.getAction().equals("BackMain")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+	/**
+	 * Add for request to search detail information for licensenumber
+	public void requestSearchDetail()throws ParseException, IOException, JSONException{
+		  HttpClient httpClient = new DefaultHttpClient();
+		  String strurl = "//此处url待定";
+		  HttpPost request = new HttpPost(strurl);
+		  request.addHeader("Accept","application/json");
+		  request.addHeader("Content-Type","application/json");//还可以自定义增加header
+		  JSONObject param = new JSONObject();//定义json对象
+		  param.put("type", "detailsearch");
+		  param.put("licenseplatenumber", mLicensePlateNumber);
+		  Log.e("yifan", param.toString());
+		  StringEntity se = new StringEntity(param.toString());
+		  request.setEntity(se);//发送数据
+		  HttpResponse httpResponse = httpClient.execute(request);//获得相应
+		  int code = httpResponse.getStatusLine().getStatusCode();
+		  if(code==HttpStatus.SC_OK){
+			  String strResult = EntityUtils.toString(httpResponse.getEntity());
+			  JSONObject result = new JSONObject(strResult);
+			  String carType = (String) result.get("cartype");
+			  String parkType = (String) result.get("parktype");
+			  int locationNumber = (Integer) result.get("locaionnumber");
+			  String startTime = (String) result.get("starttime");
+		  }else{
+			  Log.e("yifan", Integer.toString(code));
+		  }
+		 }
+	//Client's json:{ "type":"detailsearch", "licenseplatenumber":"津HG9025"}
+	//Server's json:{ "cartype":"小客车", "parktype":"普通停车", "locationnumber":1, "starttime":"2017-05-04 15:49:20"}
+	*/
 }

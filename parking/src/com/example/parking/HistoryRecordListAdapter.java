@@ -72,7 +72,14 @@ public class HistoryRecordListAdapter extends BaseAdapter {
         zujian.licensePlateNumberTV.setText((String)data.get(position).get("licensePlateNumber"));  
         zujian.startTimeTV.setText((String)data.get(position).get("startTime"));  
         zujian.leaveTimeTV.setText((String)data.get(position).get("leaveTime"));  
-        zujian.parkingLocationTV.setText((String)data.get(position).get("parkingLocation"));  
+        String parkingLocation = (String)data.get(position).get("parkingLocation");
+        if(parkingLocation.equals("泊位")){
+        	zujian.parkingLocationTV.setText(parkingLocation);  
+        }else if(parkingLocation.length()==1){
+            zujian.parkingLocationTV.setText("A000" + parkingLocation);  
+        }else if(parkingLocation.length()==2){
+            zujian.parkingLocationTV.setText("A00" + parkingLocation);  
+        }
         zujian.paymentBillTV.setText((String)data.get(position).get("expense")); 
         return convertView;  
     }

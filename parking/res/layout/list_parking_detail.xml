@@ -15,6 +15,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_weight="1"
+        android:drawableLeft="@drawable/ic_parking_24px"
         android:textSize="15sp"/>
      <TextView 
         android:id="@+id/tv_licenseplatenumber"
@@ -25,5 +26,6 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_weight="2"
+        android:drawablePadding="5sp"
         android:textSize="15sp"/>
 </LinearLayout>

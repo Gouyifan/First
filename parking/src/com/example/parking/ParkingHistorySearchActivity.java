@@ -5,7 +5,10 @@ import java.util.Date;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -104,7 +107,7 @@ public class ParkingHistorySearchActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v){
 				//String date = mHistoryDateSP.getSelectedItem().toString();
-		        changeFragment(R.id.tv_payment_state_unfinished_history,formatDate());
+		        changeFragment(mCurrentId,formatDate());
 		        Message msg = new Message();
 		        msg.what=SEARCH_SUCCESS;
 		        mHandler.sendMessage(msg);
@@ -113,6 +116,9 @@ public class ParkingHistorySearchActivity extends FragmentActivity {
         changeSelect(R.id.tv_payment_state_unfinished_history);
         changeFragment(R.id.tv_payment_state_unfinished_history,formatDate());
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	private void changeFragment(int resId,String date) {  
@@ -147,6 +153,7 @@ public class ParkingHistorySearchActivity extends FragmentActivity {
     }
 
 	private void changeSelect(int resId) {  
+		mCurrentId = resId;
 		mUnfinishedPaymentStateTV.setSelected(false);
 		mUnfinishedPaymentStateTV.setBackgroundResource(R.color.gray);
 		mFinishedPaymentStateMobileTV.setSelected(false);  
@@ -184,7 +191,8 @@ public class ParkingHistorySearchActivity extends FragmentActivity {
 	             break;  
 	    }  
 	    return super.onOptionsItemSelected(item);  
-	  }  
+	  }
+	
 	public String formatDate(){
 		StringBuilder dateBuffer = new StringBuilder(Integer.toString(mYear) + "-");
 		if(mMonth<10){
@@ -211,4 +219,19 @@ public class ParkingHistorySearchActivity extends FragmentActivity {
             }
         }
     };
+    
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

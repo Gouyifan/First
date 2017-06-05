@@ -1,6 +1,9 @@
 package com.example.parking;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -42,7 +45,11 @@ public class MobilePaymentActivity extends FragmentActivity {
         mScanTitleTV.setOnClickListener(mTabClickListener); 
         changeSelect(R.id.tv_mobile_payment_two_dimensions_code);
         changeFragment(R.id.tv_mobile_payment_two_dimensions_code);
-		getActionBar().setDisplayHomeAsUpEnabled(true); 
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        filter.addAction("BackMain");  
+        registerReceiver(mReceiver, filter); 
 	}
 
 	private void changeSelect(int resId) {  
@@ -91,4 +98,21 @@ public class MobilePaymentActivity extends FragmentActivity {
 	    }  
 	    return super.onOptionsItemSelected(item);  
 	  }  
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}else if(intent.getAction()!=null && intent.getAction().equals("BackMain")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

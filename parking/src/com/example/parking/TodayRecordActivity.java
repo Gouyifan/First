@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,12 +20,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TodayRecordActivity extends Activity {
 	public static final int NO_TODAY_PARKING_RECORD =101;
 	private View mView;
 	private ListView mListView;
+	private TextView mEmptyNotifyTV;
 	private int mLocationNumber;
 	private DBAdapter mDBAdapter;
 	@Override
@@ -30,12 +35,17 @@ public class TodayRecordActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_today_record);
         mListView=(ListView)findViewById(R.id.list_record_today);  
+        mEmptyNotifyTV=(TextView)findViewById(R.id.tv_notify_today_record_list_empty);  
         Intent intent = getIntent();
         mLocationNumber=intent.getExtras().getInt("locationNumber");
         mDBAdapter = new DBAdapter(this);
         List<Map<String, Object>> list=getData();  
         mListView.setAdapter(new TodayRecordListAdapter(this, list)); 
 		getActionBar().setDisplayHomeAsUpEnabled(true); 
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction("ExitApp");  
+        filter.addAction("BackMain"); 
+        registerReceiver(mReceiver, filter); 
 	}
 	
 	public List<Map<String, Object>> getData(){  
@@ -59,9 +69,9 @@ public class TodayRecordActivity extends Activity {
         list.add(titleMap); 
     	Log.e("yifan", "count: " + cursor.getCount());
     	Log.e("yifan", "locationNumber: " + locationNumber);
+    	int count = 0;
         try {
-        	int count = 0;
-        	while(cursor.moveToNext()){
+        	do{
         	    	  Log.e("yifan", "dblocation: " + cursor.getInt(cursor.getColumnIndex("locationnumber")));
         	    	  if(cursor.getInt(cursor.getColumnIndex("locationnumber"))==locationNumber ){
         	    		  Log.e("yifan", "+1" );
@@ -76,19 +86,18 @@ public class TodayRecordActivity extends Activity {
         	    		  map.put("paymentState", cursor.getString(cursor.getColumnIndex("paymentpattern")));
         	    		  map.put("expense", cursor.getString(cursor.getColumnIndex("expense")));
       		              list.add(map); 
-      		            count++;
+      		              count++;
         	    	  }
-        	      }
-        	if(count==0){
-        		list.remove(titleMap);
-		        Message msg = new Message();
-		        msg.what=NO_TODAY_PARKING_RECORD;
-		        mHandler.sendMessage(msg);
-        	}
-        }
-        catch (Exception e) {
+        	      }while(cursor.moveToNext());
+        }catch (Exception e) {
                 e.printStackTrace();
         } finally{
+        	    if(count==0){
+        		    list.remove(titleMap);
+		            Message msg = new Message();
+		            msg.what=NO_TODAY_PARKING_RECORD;
+		            mHandler.sendMessage(msg);
+        	    }
             	if(cursor!=null){
             		cursor.close();
                 }
@@ -112,12 +121,30 @@ public class TodayRecordActivity extends Activity {
 	        super.handleMessage(msg);
 	        switch (msg.what) {
 	            case NO_TODAY_PARKING_RECORD:
-	            	Toast.makeText(getApplicationContext(), "此泊位今日暂无停车记录", Toast.LENGTH_SHORT).show();
+	            	//Toast.makeText(getApplicationContext(), "此泊位今日暂无停车记录", Toast.LENGTH_SHORT).show();
+	            	mEmptyNotifyTV.setVisibility(View.VISIBLE);
 	                break;
 	            default:
 	                break;
 	        }
 	    }
 	};
+	
+    private BroadcastReceiver mReceiver = new BroadcastReceiver(){  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction()!=null && intent.getAction().equals("ExitApp")){
+				finish();
+			}else if(intent.getAction()!=null && intent.getAction().equals("BackMain")){
+				finish();
+			}
+		}            
+    }; 
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }
 
