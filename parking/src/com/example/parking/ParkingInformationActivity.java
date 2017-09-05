@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 
 import org.json.JSONObject;
 
+import com.example.parking.R.drawable;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -43,12 +45,12 @@ public class ParkingInformationActivity extends Activity {
 	private TextView mLicensePlateNumberTV;
 	private TextView mStartTime;
 	private Button mOkButton;
-	private Button mCancelButton;
+	private Button mPhotoBT;
 	private TextView mPhotoTitleTV;;
-	private ImageView mPhotoIV;
+	private ImageView mEnterImageIV;
+	private Bitmap mEnterImage = null;
 	private DBAdapter mDBAdapter;
 	private boolean mPermissionState=true;
-    private Bitmap mPhoto = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,30 +73,39 @@ public class ParkingInformationActivity extends Activity {
 		mOkButton.setOnClickListener(new InsertOnclickListener(mLicensePlateNumberTV.getText().toString(),
 				mCarType.getSelectedItem().toString(), mParkingType.getSelectedItem().toString(), Integer.parseInt(mLocationNumber.getSelectedItem().toString()),
 				DateFormat.format("yyyy-MM-dd HH:mm:ss", System.currentTimeMillis()).toString(), null, null, "未付"));
-		mCancelButton=(Button) findViewById(R.id.bt_camera_arriving);
-		mCancelButton.setOnClickListener(new Button.OnClickListener(){
+		mPhotoBT=(Button) findViewById(R.id.bt_camera_arriving);
+		mPhotoBT.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v){
-/*				finish();
-				Intent intent = new Intent(ParkingInformationActivity.this,MainActivity.class);
-				startActivity(intent);*/
-				openTakePhoto();
+				if(mEnterImage!=null){
+					Toast.makeText(getApplicationContext(), "最多可添加一张图片",Toast.LENGTH_SHORT).show();
+				}else{
+					openTakePhoto();
+				}
 			}
 		});
 		mPhotoTitleTV = (TextView)findViewById(R.id.tv_photo_title_arriving);
-		mPhotoIV = (ImageView)findViewById(R.id.iv_photo_arriving);
-		mPhotoIV.setOnClickListener(new Button.OnClickListener(){
+		mEnterImageIV = (ImageView)findViewById(R.id.iv_photo_arriving);
+		mEnterImageIV.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View v){
 				LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 				View imgEntryView = inflater.inflate(R.layout.dialog_photo_entry, null); // 加载自定义的布局文件
 				final AlertDialog dialog = new AlertDialog.Builder(ParkingInformationActivity.this).create();
 				ImageView img = (ImageView)imgEntryView.findViewById(R.id.iv_large_image);
-				img.setImageBitmap(mPhoto);
+				Button deleteBT = (Button)imgEntryView.findViewById(R.id.bt_delete_image);
+				img.setImageBitmap(mEnterImage);
 				dialog.setView(imgEntryView); // 自定义dialog
 				dialog.show();
 				imgEntryView.setOnClickListener(new OnClickListener() {
 				    public void onClick(View paramView) {
+				        dialog.cancel();
+				    }
+			    });
+				deleteBT.setOnClickListener(new OnClickListener() {
+				    public void onClick(View paramView) {
+				    	mEnterImage = null;
+				    	mEnterImageIV.setImageResource(drawable.ic_photo_background_64px);
 				        dialog.cancel();
 				    }
 			    });
@@ -151,7 +162,7 @@ public class ParkingInformationActivity extends Activity {
         	 Log.e("yifan","p3 = " + mPermissionState);
         	 if(mPermissionState){
              	long  result = mDBAdapter.insertParking(licensePlate,mCarType.getSelectedItem().toString(),mParkingType.getSelectedItem().toString(),
-             			 Integer.parseInt(mLocationNumber.getSelectedItem().toString()),startTime,leaveTime,expense,paymentPattern,converImageToByte(mPhoto));
+             			 Integer.parseInt(mLocationNumber.getSelectedItem().toString()),startTime,leaveTime,expense,paymentPattern,converImageToByte(mEnterImage));
             	if (result != -1){//插入成功
             		Message msg = new Message();
                     msg.what = EVENT_INSERT_SUCCESS;
@@ -235,29 +246,29 @@ public class ParkingInformationActivity extends Activity {
 	       super.onActivityResult(requestCode, resultCode, data);
 	       if (data!= null) {
 	           switch (requestCode) {
-	               case TAKE_PHOTO: //拍摄图片并选择
-	               if (data.getData() != null|| data.getExtras() != null){ //防止没有返回结果
-	                   Uri uri =data.getData();
-	                   if (uri != null) {
-	                	   mPhoto =BitmapFactory.decodeFile(uri.getPath()); //拿到图片
-	                   }
-	                   if (mPhoto == null) {
-	                       Bundle bundle =data.getExtras();
-	                       if (bundle != null){
-	                    	   mPhoto =(Bitmap) bundle.get("data");
-	                       } else {
-	                       Toast.makeText(getApplicationContext(), "找不到图片",Toast.LENGTH_SHORT).show();
-	                        }
+            case TAKE_PHOTO: //拍摄图片并选择
+            if (data.getData() != null|| data.getExtras() != null){ //防止没有返回结果
+                Uri uri =data.getData();
+                if (uri != null) {
+             	   if(mEnterImage==null){
+	                	   mEnterImage =BitmapFactory.decodeFile(uri.getPath()); //拿到图片
+             	   }
+                }
+                Bundle bundle =data.getExtras();
+                if (bundle != null){
+ 	               if (mEnterImage == null) {
+                 	   mEnterImage =(Bitmap) bundle.get("data");
 	                    }
-	               }
-	               if(mPhoto!=null){
-		               mPhotoTitleTV.setVisibility(View.VISIBLE);
-		               mPhotoIV.setVisibility(View.VISIBLE);
-		               mPhotoIV.setImageBitmap(mPhoto);
-	               }
-	               break;
+                } 
+            }
+            if(mEnterImage!=null){
+	               mEnterImageIV.setImageBitmap(mEnterImage);
+            }
+            break;
+       
 	          }
 	      }
+	   
 	   }
 	
 

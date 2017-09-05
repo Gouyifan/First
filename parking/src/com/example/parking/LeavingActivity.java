@@ -1,7 +1,6 @@
 package com.example.parking;
 
 
-import com.example.parking.TestLeavingActivity.TimeThread;
 
 import android.app.Activity;
 import android.app.AlertDialog;

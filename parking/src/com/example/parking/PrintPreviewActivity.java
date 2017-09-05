@@ -10,13 +10,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import printerdemo.PrinterClass;
 
 public class PrintPreviewActivity extends Activity {
 	private static final int PAYMENT_TYPE_CASH=201;
@@ -35,7 +35,6 @@ public class PrintPreviewActivity extends Activity {
 	private TextView mParkTypeTV;
 	private TextView mStartTimeTV;
 	private TextView mLeaveTimeTV;
-	//private TextView mParkTimeTV;
 	private TextView mExpenseTotalTV;
 	private TextView mFeeScaleTV;
 	private TextView mChargeStandardTV;
@@ -48,16 +47,11 @@ public class PrintPreviewActivity extends Activity {
 	private String mLeaveTime;
 	private String mExpense;
 	private String mLicensePlateNumber;
-	private DBAdapter mDBAdapter;
-	private PrinterClass mPrinter;
-    private boolean mPaperTemState = true;
-    private int mRecindex = 0;
-    private String mRecviceMessage = "";
+    private static String LOG_TAG = "PrintPreviewActivity";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_print_preview);
-		mDBAdapter = new DBAdapter(this);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		mPayType=bundle.getInt("paytype");
@@ -129,16 +123,7 @@ public class PrintPreviewActivity extends Activity {
 				}
 			}
 		});
-/*		mPrinter = new PrinterClass();
-		mPrinter.setPrinterResponseMessageListener(new PrinterClass.PrinterResponseMessageListener() {
-            public void response(byte[] RecMessage) {
-                if(mRecindex ==1){
-                	mRecviceMessage =mPrinter.bytesToHex(RecMessage,0,RecMessage.length);
-                }else if(mRecindex ==2){
-                	//TODO
-                }
-            }
-        });*/
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         IntentFilter filter = new IntentFilter();  
         filter.addAction("ExitApp");  
@@ -151,6 +136,9 @@ public class PrintPreviewActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case EVENT_PRINT_SUCCESS:
+                	int stat = MyApp.ddi.ddi_prnt_esc(new byte[]{0x1B, 0x40}, 2); //初始化
+                	
+                	Log.e(LOG_TAG,"stat is " + stat ); 
                 	StringBuffer sb = new StringBuffer();
                 	sb.append(mUserNumberTV.getText()).append("\n").append(mParkNameTV.getText())
                 	.append("\n").append(mParkNumberTV.getText()).append(" ").append(mLocationNumberTV.getText())
@@ -160,10 +148,9 @@ public class PrintPreviewActivity extends Activity {
                 	.append("\n").append(mExpenseTotalTV.getText()).append("  ")
                 	.append(mFeeScaleTV.getText()).append("\n").append(mChargeStandardTV.getText())
                 	.append("\n").append(mSuperviseTelephoneTV.getText());
-                	//mPrinter.printer_uart_on();
-                	//mPrinter.serialport_uart_on(doGetData());;
-                    //mPrinter.send(sb.toString());
-                	//mPrinter.send("hello");
+                	
+                	print_string(sb.toString());
+                	
                 	Toast.makeText(getApplicationContext(), "该设备不支持打印功能", Toast.LENGTH_SHORT).show();
                 	break;
                 default:
@@ -171,10 +158,19 @@ public class PrintPreviewActivity extends Activity {
             }
         }
     };
-
-    private int doGetData(){
-        SharedPreferences settings = getSharedPreferences("settings", BIND_AUTO_CREATE);
-        return settings.getInt("data",9600);
+    
+    private void print_string(String text){
+        try {
+        	Log.e(LOG_TAG,"print_string->try" ); 
+            byte [] prntBuf = text.getBytes("GBK");
+            MyApp.ddi.ddi_prnt_esc(prntBuf, prntBuf.length);
+            int stat = MyApp.ddi.ddi_prnt_esc(new byte[]{0x1B, 0x4A, 18}, 3);
+        	Log.e(LOG_TAG,"print_string->try stat is " + stat ); 
+        }catch (Exception e)
+        {
+        	Log.e(LOG_TAG,"print_string->exception" + e); 
+            e.printStackTrace();
+        }
     }
     
 	public boolean onOptionsItemSelected(MenuItem item) {  

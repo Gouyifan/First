@@ -13,4 +13,5 @@
     <string name="ok">确定</string>
     <string name="camera">拍照</string>
     <string name="photoTitleArriving">入场图片: </string>
+    <string name="deleteimage">删除 </string>
 </resources>

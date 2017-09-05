@@ -29,7 +29,7 @@ public class MessageCenterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message_center);
 		mListView=(ListView)findViewById(R.id.list_message_center);  
-        List<Map<String, Object>> list=getData();  
+        List<Map<String, Object>> list=getData(); 
         mListView.setAdapter(new MessageCenterListAdapter(this, list)); 
         mListView.setOnItemClickListener(new OnItemClickListener(){
             @Override

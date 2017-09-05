@@ -334,6 +334,7 @@ public class WorkAttendanceActivity extends Activity {
      @Override
      public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
+        	android.util.Log.d("yifan","error code is "  + amapLocation.getErrorCode());
            if (amapLocation.getErrorCode() == 0) {
             //定位成功回调信息，设置相关消息
                 amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
@@ -357,6 +358,7 @@ public class WorkAttendanceActivity extends Activity {
         		drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); //设置边界
                 if(mType==ATTENDANCE_TYPE_START){
                 	String location = amapLocation.getProvince() + "" + amapLocation.getDistrict() + "" + amapLocation.getStreet() + "" + amapLocation.getStreetNum();
+                	android.util.Log.d("yifan","location is "  + location);
     			    mAttendanceStartLocationTV.setText(location);
     			    mAttendanceStartLocationTV.setCompoundDrawables(drawable, null, null, null);//画在左边
     		    }else if(mType==ATTENDANCE_TYPE_END){
